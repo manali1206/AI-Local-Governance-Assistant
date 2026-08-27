@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,11 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-data class AssistantMessage(
-    val message: String,
-    val isUser: Boolean
-)
+import com.example.localgovernanceassistant.ai.model.ChatMessage
+import com.example.localgovernanceassistant.ai.repository.AIRepository
 
 @Composable
 fun AssistantScreen(
@@ -34,9 +31,13 @@ fun AssistantScreen(
         mutableStateOf("")
     }
 
+    val aiRepository = remember {
+        AIRepository()
+    }
+
     val messages = remember {
         mutableStateListOf(
-            AssistantMessage(
+            ChatMessage(
                 message = "Hello! I am your Local Governance Assistant.",
                 isUser = false
             )
@@ -68,8 +69,7 @@ fun AssistantScreen(
                         "You: ${message.message}"
                     } else {
                         "Assistant: ${message.message}"
-                    },
-                    modifier = Modifier.fillMaxWidth()
+                    }
                 )
             }
         }
@@ -77,7 +77,8 @@ fun AssistantScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp)
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
             OutlinedTextField(
@@ -92,19 +93,24 @@ fun AssistantScreen(
                 singleLine = true
             )
 
-            IconButton(
+            Button(
                 onClick = {
+
                     if (question.isNotBlank()) {
 
                         messages.add(
-                            AssistantMessage(
+                            ChatMessage(
                                 message = question,
                                 isUser = true
                             )
                         )
+
+                        val response =
+                            aiRepository.getResponse(question)
+
                         messages.add(
-                            AssistantMessage(
-                                message = "I received your question. AI response will be connected next.",
+                            ChatMessage(
+                                message = response,
                                 isUser = false
                             )
                         )
@@ -113,10 +119,7 @@ fun AssistantScreen(
                     }
                 }
             ) {
-                Text(
-                    text = "Send",
-                    fontSize = 14.sp
-                )
+                Text("Send")
             }
         }
     }
