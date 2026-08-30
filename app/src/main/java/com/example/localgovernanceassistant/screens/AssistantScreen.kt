@@ -16,12 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.localgovernanceassistant.ai.model.ChatMessage
 import com.example.localgovernanceassistant.ai.repository.AIRepository
+import kotlinx.coroutines.launch
 
 @Composable
 fun AssistantScreen(
@@ -31,10 +33,6 @@ fun AssistantScreen(
         mutableStateOf("")
     }
 
-    val aiRepository = remember {
-        AIRepository()
-    }
-
     val messages = remember {
         mutableStateListOf(
             ChatMessage(
@@ -42,6 +40,12 @@ fun AssistantScreen(
                 isUser = false
             )
         )
+    }
+
+    val scope = rememberCoroutineScope()
+
+    val aiRepository = remember {
+        AIRepository()
     }
 
     Column(
@@ -61,7 +65,6 @@ fun AssistantScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
             items(messages) { message ->
 
                 Text(
@@ -69,7 +72,8 @@ fun AssistantScreen(
                         "You: ${message.message}"
                     } else {
                         "Assistant: ${message.message}"
-                    }
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
@@ -77,8 +81,7 @@ fun AssistantScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(12.dp)
         ) {
 
             OutlinedTextField(
@@ -95,29 +98,33 @@ fun AssistantScreen(
 
             Button(
                 onClick = {
-
                     if (question.isNotBlank()) {
+
+                        val userQuestion = question
 
                         messages.add(
                             ChatMessage(
-                                message = question,
+                                message = userQuestion,
                                 isUser = true
                             )
                         )
 
-                        val response =
-                            aiRepository.getResponse(question)
-
-                        messages.add(
-                            ChatMessage(
-                                message = response,
-                                isUser = false
-                            )
-                        )
-
                         question = ""
+
+                        scope.launch {
+                            val response =
+                                aiRepository.sendMessage(userQuestion)
+
+                            messages.add(
+                                ChatMessage(
+                                    message = response.message,
+                                    isUser = false
+                                )
+                            )
+                        }
                     }
-                }
+                },
+                modifier = Modifier.padding(start = 8.dp)
             ) {
                 Text("Send")
             }
