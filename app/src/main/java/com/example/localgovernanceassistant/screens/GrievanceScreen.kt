@@ -29,6 +29,36 @@ import com.example.localgovernanceassistant.repository.GrievanceRepository
 import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
+
+@Composable
+fun GrievanceStatus(status: String) {
+    val statusText = when (status) {
+        "Pending" -> "Pending"
+        "In Progress" -> "In Progress"
+        "Resolved" -> "Resolved"
+        "Rejected" -> "Rejected"
+        else -> status
+    }
+
+    Text(
+        text = statusText,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        modifier = Modifier
+            .background(
+                color = Color.LightGray,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(
+                horizontal = 12.dp,
+                vertical = 6.dp
+            )
+    )
+}
 
 @Composable
 fun GrievanceScreen() {
@@ -299,11 +329,7 @@ fun GrievanceScreen() {
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "Status: ${grievance.status}",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp
-                            )
+                            GrievanceStatus(status = grievance.status)
 
                             if (grievance.createdAt != null) {
                                 Spacer(modifier = Modifier.height(6.dp))
