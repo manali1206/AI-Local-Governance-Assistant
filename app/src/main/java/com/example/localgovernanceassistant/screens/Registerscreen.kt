@@ -19,9 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.rememberCoroutineScope
+import com.example.localgovernanceassistant.supabaseClient
+import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.launch
 
 @Composable
-fun RegisterScreen(
+fun Registerscreen(
     onRegisterSuccess: () -> Unit
 ) {
 
@@ -34,6 +38,14 @@ fun RegisterScreen(
     }
 
     var password by remember {
+        mutableStateOf("")
+    }
+
+    val scope = rememberCoroutineScope()
+    var errorMessage by remember {
+        mutableStateOf("")
+    }
+    var successMessage by remember {
         mutableStateOf("")
     }
 
@@ -94,9 +106,36 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+        }
+        if (successMessage.isNotEmpty()) {
+            Text(
+                text = successMessage,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+        }
+
         Button(
             onClick = {
-                onRegisterSuccess()
+                scope.launch {
+                    try {
+                        supabaseClient.auth.signUpWith(
+                            io.github.jan.supabase.auth.providers.builtin.Email
+                        ) {
+                            this.email = email
+                            this.password = password
+                        }
+
+                        successMessage = "Account created successfully. Please check your email, then login."
+                        onRegisterSuccess()
+                    } catch (e: Exception) {
+                        errorMessage = e.message ?: "Registration failed"
+                    }
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {

@@ -8,13 +8,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.localgovernanceassistant.supabaseClient
+import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.launch
+
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onLogout: () -> Unit
+) {
+
+    val scope = rememberCoroutineScope()
+    val currentUser = supabaseClient.auth.currentUserOrNull()
 
     Column(
         modifier = Modifier
@@ -25,7 +35,7 @@ fun ProfileScreen() {
     ) {
 
         Text(
-            text = "Profile",
+            text = "My Profile",
             fontSize = 28.sp
         )
 
@@ -34,17 +44,27 @@ fun ProfileScreen() {
             fontSize = 15.sp,
             modifier = Modifier.padding(
                 top = 10.dp,
-                bottom = 20.dp
+                bottom = 10.dp
             )
         )
+        currentUser?.email?.let { email ->
+            Text(
+                text = email,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(bottom = 20.dp)
+            )
+        }
 
         Button(
             onClick = {
-                // Firebase authentication will be added later.
+                scope.launch {
+                    supabaseClient.auth.signOut()
+                    onLogout()
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Sign In")
+            Text("Logout")
         }
     }
 }

@@ -21,6 +21,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.localgovernanceassistant.screens.LoginScreen
+import com.example.localgovernanceassistant.screens.Registerscreen
 import com.example.localgovernanceassistant.screens.AssistantScreen
 import com.example.localgovernanceassistant.screens.GrievanceScreen
 import com.example.localgovernanceassistant.screens.HomeScreen
@@ -114,10 +116,35 @@ fun AppNavigation() {
 
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = "login",
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable("login") {
+                LoginScreen(
+                    onLoginSuccess = {
+                        navController.navigate("home") {
+                            popUpTo("login") {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onRegisterClick = {
+                        navController.navigate("register")
+                    }
+                )
+            }
 
+            composable("register") {
+                Registerscreen(
+                    onRegisterSuccess = {
+                        navController.navigate("login") {
+                            popUpTo("register") {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
             composable("home") {
 
                 HomeScreen(
@@ -144,7 +171,15 @@ fun AppNavigation() {
             }
 
             composable("profile") {
-                ProfileScreen()
+                ProfileScreen(
+                    onLogout = {
+                        navController.navigate("login") {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
         }
     }

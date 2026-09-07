@@ -14,25 +14,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.localgovernanceassistant.supabaseClient
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
+    var emailText by remember { mutableStateOf("") }
+    var passwordText by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
-    var email by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -56,13 +59,12 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
-            value = email,
+            value = emailText,
             onValueChange = {
-                email = it
+                emailText = it
+                errorMessage = ""
             },
-            label = {
-                Text("Email")
-            },
+            label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -70,34 +72,61 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextField(
-            value = password,
+            value = passwordText,
             onValueChange = {
-                password = it
+                passwordText = it
+                errorMessage = ""
             },
-            label = {
-                Text("Password")
-            },
+            label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+        }
 
         Button(
             onClick = {
-                onLoginSuccess()
+                if (emailText.isBlank() || passwordText.isBlank()) {
+                    errorMessage = "Please enter email and password"
+                    return@Button
+                }
+
+                scope.launch {
+                    isLoading = true
+
+                    try {
+                        supabaseClient.auth.signInWith(Email) {
+                            email = emailText.trim()
+                            password = passwordText
+                        }
+                        isLoading = false
+                        onLoginSuccess()
+
+                    } catch (e: Exception) {
+                        isLoading = false
+                        errorMessage = e.message ?: "Login failed"
+                    }
+                }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading
         ) {
-            Text("Login")
+            Text(
+                text = if (isLoading) "Logging in..." else "Login"
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            onClick = {
-                onRegisterClick()
-            },
+            onClick = onRegisterClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")
