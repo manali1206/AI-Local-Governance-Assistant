@@ -73,41 +73,44 @@ fun AppNavigation() {
 
         bottomBar = {
 
-            NavigationBar {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+            if (currentRoute != "login" && currentRoute != "register") {
 
-                bottomNavItems.forEach { item ->
+                NavigationBar {
 
-                    NavigationBarItem(
-                        selected = currentRoute == item.route,
+                    bottomNavItems.forEach { item ->
 
-                        onClick = {
-                            navController.navigate(item.route) {
+                        NavigationBarItem(
+                            selected = currentRoute == item.route,
 
-                                popUpTo(
-                                    navController.graph.findStartDestination().id
-                                ) {
-                                    saveState = true
+                            onClick = {
+                                navController.navigate(item.route) {
+
+                                    popUpTo(
+                                        navController.graph.findStartDestination().id
+                                    ) {
+                                        saveState = true
+                                    }
+
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
+                            },
 
-                                launchSingleTop = true
-                                restoreState = true
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = item.title
+                                )
+                            },
+
+                            label = {
+                                Text(item.title)
                             }
-                        },
-
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = item.title
-                            )
-                        },
-
-                        label = {
-                            Text(item.title)
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

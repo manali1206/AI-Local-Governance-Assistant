@@ -107,8 +107,6 @@ fun LoginScreen(
                             password = passwordText
                         }
 
-                        val session = supabaseClient.auth.currentSessionOrNull()
-                        println("ACCESS_TOKEN=${session?.accessToken}")
                         isLoading = false
                         onLoginSuccess()
 
