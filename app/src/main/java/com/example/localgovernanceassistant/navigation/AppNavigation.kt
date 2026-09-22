@@ -29,6 +29,8 @@ import com.example.localgovernanceassistant.screens.HomeScreen
 import com.example.localgovernanceassistant.screens.NearbyScreen
 import com.example.localgovernanceassistant.screens.ProfileScreen
 import com.example.localgovernanceassistant.screens.SchemesScreen
+import com.example.localgovernanceassistant.supabaseClient
+import io.github.jan.supabase.auth.auth
 
 data class BottomNavItem(
     val route: String,
@@ -40,6 +42,12 @@ data class BottomNavItem(
 fun AppNavigation() {
 
     val navController = rememberNavController()
+    val startDestination =
+        if (supabaseClient.auth.currentSessionOrNull() != null) {
+            "home"
+        } else {
+            "login"
+        }
 
     val bottomNavItems = listOf(
         BottomNavItem(
@@ -119,7 +127,7 @@ fun AppNavigation() {
 
         NavHost(
             navController = navController,
-            startDestination = "login",
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("login") {
