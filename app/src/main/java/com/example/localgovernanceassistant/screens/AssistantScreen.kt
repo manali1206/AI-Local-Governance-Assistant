@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,46 +22,36 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.localgovernanceassistant.ai.model.ChatMessage
+import com.example.localgovernanceassistant.ai.repository.AIRepository
 import kotlinx.coroutines.launch
-
-data class AssistantMessage(
-    val message: String,
-    val isUser: Boolean
-)
 
 @Composable
 fun AssistantScreen(
-    modifier: Modifier = Modifier,
-    onAskAi: (suspend (String) -> String)? = null
+    modifier: Modifier = Modifier
 ) {
-
-    var question by remember {
-        mutableStateOf("")
-    }
-
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
-
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
-
-    val scope = rememberCoroutineScope()
+    var question by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     val messages = remember {
         mutableStateListOf(
-            AssistantMessage(
+            ChatMessage(
                 message = "Hello! I am your Local Governance Assistant.",
                 isUser = false
             )
         )
     }
 
+    val scope = rememberCoroutineScope()
+
+    val aiRepository = remember {
+        AIRepository()
+    }
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-
         Text(
             text = "AI Assistant",
             fontSize = 24.sp,
@@ -75,9 +65,7 @@ fun AssistantScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
             items(messages) { message ->
-
                 Text(
                     text = if (message.isUser) {
                         "You: ${message.message}"
@@ -110,7 +98,6 @@ fun AssistantScreen(
         }
 
         if (errorMessage.isNotEmpty()) {
-
             Text(
                 text = errorMessage,
                 fontSize = 14.sp,
@@ -126,7 +113,6 @@ fun AssistantScreen(
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
-
             OutlinedTextField(
                 value = question,
                 onValueChange = {
@@ -141,22 +127,19 @@ fun AssistantScreen(
                 enabled = !isLoading
             )
 
-            IconButton(
+            Button(
                 onClick = {
-
                     val userQuestion = question.trim()
 
                     if (userQuestion.isEmpty()) {
                         errorMessage = "Please enter a question."
-                        return@IconButton
+                        return@Button
                     }
 
-                    if (isLoading) {
-                        return@IconButton
-                    }
+                    if (isLoading) return@Button
 
                     messages.add(
-                        AssistantMessage(
+                        ChatMessage(
                             message = userQuestion,
                             isUser = true
                         )
@@ -166,43 +149,30 @@ fun AssistantScreen(
                     errorMessage = ""
 
                     scope.launch {
-
                         isLoading = true
 
                         try {
-
-                            if (onAskAi == null) {
-                                throw IllegalStateException(
-                                    "AI service is not connected yet."
-                                )
-                            }
-
-                            val answer = onAskAi(userQuestion)
+                            val response =
+                                aiRepository.sendMessage(userQuestion)
 
                             messages.add(
-                                AssistantMessage(
-                                    message = answer,
+                                ChatMessage(
+                                    message = response.message,
                                     isUser = false
                                 )
                             )
-
                         } catch (e: Exception) {
-
                             errorMessage =
                                 e.message ?: "Failed to get AI response."
-
                         } finally {
-
                             isLoading = false
                         }
                     }
                 },
+                modifier = Modifier.padding(start = 8.dp),
                 enabled = !isLoading
             ) {
-                Text(
-                    text = "Send",
-                    fontSize = 14.sp
-                )
+                Text("Send")
             }
         }
     }

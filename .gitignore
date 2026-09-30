@@ -13,6 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
 .env
 __pycache__/
 .idea/
+backend/venv/
+backend/__pycache__/

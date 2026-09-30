@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Header, Depends
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from supabase import create_client, Client
@@ -10,8 +10,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ENV_FILE = os.path.join(BASE_DIR, ".env")
 
 load_dotenv(ENV_FILE)
-
-
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")
@@ -32,6 +30,7 @@ supabase: Client = create_client(
 
 app = FastAPI()
 security = HTTPBearer()
+
 
 def verify_admin(authorization: str | None):
     if not authorization:
@@ -75,8 +74,13 @@ def verify_admin(authorization: str | None):
             detail="Invalid authentication token"
         )
 
+
 class StatusUpdateRequest(BaseModel):
     status: str
+
+
+class ChatRequest(BaseModel):
+    message: str
 
 
 @app.get("/")
@@ -96,7 +100,7 @@ def health_check():
 @app.get("/test-supabase")
 def test_supabase():
     try:
-        response = (
+        (
             supabase
             .from_("Grievances")
             .select("id")
@@ -115,8 +119,12 @@ def test_supabase():
             detail=f"Supabase connection failed: {str(e)}"
         )
 
-class StatusUpdateRequest(BaseModel):
-    status: str
+
+@app.post("/chat")
+def chat(request: ChatRequest):
+    return {
+        "response": f"Backend received: {request.message}"
+    }
 
 
 @app.patch("/grievances/{grievance_id}/status")
@@ -126,6 +134,7 @@ def update_grievance_status(
     credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
     verify_admin(f"Bearer {credentials.credentials}")
+
     allowed_statuses = [
         "Pending",
         "In Progress",
@@ -165,22 +174,26 @@ def update_grievance_status(
                 "message": "Status is already set to this value"
             }
 
-        supabase \
-            .from_("Grievances") \
+        (
+            supabase
+            .from_("Grievances")
             .update({
                 "status": request.status
-            }) \
-            .eq("id", grievance_id) \
+            })
+            .eq("id", grievance_id)
             .execute()
+        )
 
-        supabase \
-            .from_("grievance_status_history") \
+        (
+            supabase
+            .from_("grievance_status_history")
             .insert({
                 "grievance_id": grievance_id,
                 "old_status": old_status,
                 "new_status": request.status
-            }) \
+            })
             .execute()
+        )
 
         return {
             "status": "success",
@@ -196,4 +209,4 @@ def update_grievance_status(
         raise HTTPException(
             status_code=500,
             detail=f"Failed to update grievance status: {str(e)}"
-        ) 
+        )
