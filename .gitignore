@@ -15,3 +15,7 @@
 local.properties
 .env
 __pycache__/
+
+.idea/
+.idea-backup/
+backend/.idea/
