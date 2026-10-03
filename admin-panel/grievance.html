@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grievance Details - AI Local Governance</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <div class="details-page">
+
+        <div class="details-header">
+
+            <div>
+                <p class="admin-label">Administrator</p>
+                <h1>Grievance Details</h1>
+                <p class="dashboard-description">
+                    Review submitted citizen grievance information.
+                </p>
+            </div>
+
+            <a href="dashboard.html" class="back-button">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="details-card">
+
+            <div class="details-top">
+
+                <div>
+                    <p class="detail-label">Reference ID</p>
+                    <h2>GRV001</h2>
+                </div>
+
+                <span class="status-badge pending-badge">
+                    Pending
+                </span>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <p class="detail-label">Grievance Title</p>
+
+                <h3>
+                    Street Light Not Working
+                </h3>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <p class="detail-label">Description</p>
+
+                <p class="detail-text">
+                    The street light near the main road has not been
+                    working for several days. This is causing difficulty
+                    for residents and pedestrians during the night.
+                </p>
+
+            </div>
+
+
+            <div class="detail-grid">
+
+                <div>
+                    <p class="detail-label">Submitted By</p>
+                    <p class="detail-value">Citizen User</p>
+                </div>
+
+                <div>
+                    <p class="detail-label">Submitted Date</p>
+                    <p class="detail-value">03 Oct 2026</p>
+                </div>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <p class="detail-label">Update Status</p>
+
+                <select class="details-status-select">
+
+                    <option selected>Pending</option>
+                    <option>In Progress</option>
+                    <option>Resolved</option>
+                    <option>Rejected</option>
+
+                </select>
+
+                <button class="update-status-button">
+                    Update Status
+                </button>
+
+            </div>
+
+
+            <p id="status-message"></p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const updateButton =
+            document.querySelector(".update-status-button");
+
+        const statusSelect =
+            document.querySelector(".details-status-select");
+
+        const statusMessage =
+            document.getElementById("status-message");
+
+        updateButton.addEventListener("click", function () {
+
+            statusMessage.textContent =
+                "Status update will be connected to the backend.";
+
+        });
+
+    </script>
+
+</body>
+</html>
