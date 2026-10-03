@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,21 +18,26 @@
         <aside class="sidebar">
 
             <div class="brand">
-                <div class="logo-small">ALG</div>
+
+                <div class="logo-small">
+                    ALG
+                </div>
 
                 <div>
                     <h2>AI Local</h2>
                     <span>Governance</span>
                 </div>
+
             </div>
+
 
             <nav class="sidebar-nav">
 
-                <a href="#" class="active">
+                <a  href="dashboard.html" class="active">
                     Dashboard
                 </a>
 
-                <a href="#">
+                <a href="#grievances">
                     Grievances
                 </a>
 
@@ -39,43 +45,58 @@
                     Citizens
                 </a>
 
-                <a href="#">
+                <a href="reports.html">
                     Reports
                 </a>
 
             </nav>
 
-            <button class="logout-button">
-                Logout
-            </button>
 
-        </aside>
+            <a href="index.html" class="logout-button">
+             Logout
+            </a>
+           </aside>
 
 
         <!-- Main Content -->
         <main class="dashboard-main">
 
+            <!-- Header -->
             <header class="dashboard-header">
 
                 <div>
-                    <p class="admin-label">Administrator</p>
 
-                    <h1>Dashboard</h1>
+                    <p class="admin-label">
+                        Administrator
+                    </p>
+
+                    <h1>
+                        Dashboard
+                    </h1>
 
                     <p class="dashboard-description">
                         Monitor citizen grievances and local governance services.
                     </p>
+
                 </div>
 
+
                 <div class="admin-profile">
+
                     <div class="admin-avatar">
                         A
                     </div>
 
                     <div>
-                        <strong>Admin</strong>
-                        <span>Administrator</span>
+                        <strong>
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
                     </div>
+
                 </div>
 
             </header>
@@ -85,40 +106,76 @@
             <section class="stats-grid">
 
                 <div class="stat-card">
-                    <span>Total Grievances</span>
-                    <strong>25</strong>
+
+                    <span>
+                        Total Grievances
+                    </span>
+
+                    <strong id="totalCount">
+                        0
+                    </strong>
+
                 </div>
+
 
                 <div class="stat-card pending">
-                    <span>Pending</span>
-                    <strong>10</strong>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong id="pendingCount">
+                        0
+                    </strong>
+
                 </div>
+
 
                 <div class="stat-card progress">
-                    <span>In Progress</span>
-                    <strong>8</strong>
+
+                    <span>
+                        In Progress
+                    </span>
+
+                    <strong id="progressCount">
+                        0
+                    </strong>
+
                 </div>
 
+
                 <div class="stat-card resolved">
-                    <span>Resolved</span>
-                    <strong>5</strong>
+
+                    <span>
+                        Resolved
+                    </span>
+
+                    <strong id="resolvedCount">
+                        0
+                    </strong>
+
                 </div>
 
             </section>
 
 
-            <!-- Grievance Section -->
-            <section class="grievance-section">
+            <!-- Grievances -->
+            <section class="grievance-section" id="grievances">
 
                 <div class="section-heading">
 
                     <div>
-                        <h2>Recent Grievances</h2>
+
+                        <h2>
+                            Recent Grievances
+                        </h2>
 
                         <p>
                             Review and manage submitted citizen complaints.
                         </p>
+
                     </div>
+
 
                     <button class="view-all-button">
                         View All
@@ -136,20 +193,35 @@
                         class="search-box"
                     >
 
+
                     <select class="status-filter">
 
-                        <option>All Status</option>
-                        <option>Pending</option>
-                        <option>In Progress</option>
-                        <option>Resolved</option>
-                        <option>Rejected</option>
+                        <option>
+                            All Status
+                        </option>
+
+                        <option>
+                            Pending
+                        </option>
+
+                        <option>
+                            In Progress
+                        </option>
+
+                        <option>
+                            Resolved
+                        </option>
+
+                        <option>
+                            Rejected
+                        </option>
 
                     </select>
 
                 </div>
 
 
-                <!-- Table -->
+                <!-- Grievance Table -->
                 <div class="table-wrapper">
 
                     <table>
@@ -157,87 +229,140 @@
                         <thead>
 
                             <tr>
-                                <th>Reference ID</th>
-                                <th>Title</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Action</th>
+
+                                <th>
+                                    Reference ID
+                                </th>
+
+                                <th>
+                                    Title
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
                             </tr>
 
                         </thead>
 
+
                         <tbody>
 
+                            <!-- GRV001 -->
                             <tr>
 
-                                <td>GRV001</td>
+                                <td>
+                                    GRV001
+                                </td>
 
                                 <td>
                                     Street Light Not Working
                                 </td>
 
                                 <td>
+
                                     <span class="status-badge pending-badge">
                                         Pending
                                     </span>
+
                                 </td>
 
-                                <td>03 Oct 2026</td>
+                                <td>
+                                    03 Oct 2026
+                                </td>
 
                                 <td>
-                                    <a href="grievance.html" class="action-button">
-                                    View
-                                    </a>                                
+
+                                    <a
+                                        href="grievance.html?id=GRV001"
+                                        class="action-button"
+                                    >
+                                        View
+                                    </a>
+
                                 </td>
 
                             </tr>
 
 
+                            <!-- GRV002 -->
                             <tr>
 
-                                <td>GRV002</td>
+                                <td>
+                                    GRV002
+                                </td>
 
                                 <td>
                                     Water Supply Issue
                                 </td>
 
                                 <td>
+
                                     <span class="status-badge progress-badge">
                                         In Progress
                                     </span>
+
                                 </td>
 
-                                <td>02 Oct 2026</td>
+                                <td>
+                                    02 Oct 2026
+                                </td>
 
                                 <td>
-                                    <a href="grievance.html" class="action-button">
-                                    View
+
+                                    <a
+                                        href="grievance.html?id=GRV002"
+                                        class="action-button"
+                                    >
+                                        View
                                     </a>
+
                                 </td>
 
                             </tr>
 
 
+                            <!-- GRV003 -->
                             <tr>
 
-                                <td>GRV003</td>
+                                <td>
+                                    GRV003
+                                </td>
 
                                 <td>
                                     Road Maintenance Request
                                 </td>
 
                                 <td>
+
                                     <span class="status-badge resolved-badge">
                                         Resolved
                                     </span>
+
                                 </td>
 
-                                <td>01 Oct 2026</td>
+                                <td>
+                                    01 Oct 2026
+                                </td>
 
                                 <td>
-                                    <a href="grievance.html" class="action-button">
-                                     View
-                                    </a>                                
+
+                                    <a
+                                        href="grievance.html?id=GRV003"
+                                        class="action-button"
+                                    >
+                                        View
+                                    </a>
+
                                 </td>
 
                             </tr>
@@ -251,14 +376,22 @@
             </section>
 
 
+            <!-- Footer -->
             <footer class="dashboard-footer">
-                AI Local Governance Assistant • Administrator Portal
+
+                AI Local Governance Assistant
+                • Administrator Portal
+
             </footer>
 
         </main>
 
     </div>
 
-<script src="script.js"></script>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
 </body>
+
 </html>

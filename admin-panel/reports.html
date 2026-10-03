@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - AI Local Governance</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <div class="reports-page">
+
+        <div class="details-header">
+
+            <div>
+                <p class="admin-label">Administrator</p>
+
+                <h1>Reports</h1>
+
+                <p class="dashboard-description">
+                    Overview of citizen grievance activity.
+                </p>
+            </div>
+
+            <a href="dashboard.html" class="back-button">
+                ← Dashboard
+            </a>
+
+        </div>
+
+
+        <section class="report-summary">
+
+            <div class="report-card">
+                <span>Total Grievances</span>
+                <strong id="reportTotal">3</strong>
+            </div>
+
+            <div class="report-card">
+                <span>Pending</span>
+                <strong id="reportPending">1</strong>
+            </div>
+
+            <div class="report-card">
+                <span>In Progress</span>
+                <strong id="reportProgress">1</strong>
+            </div>
+
+            <div class="report-card">
+                <span>Resolved</span>
+                <strong id="reportResolved">1</strong>
+            </div>
+
+        </section>
+
+
+        <section class="report-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Grievance Status Overview</h2>
+
+                    <p>
+                        Current distribution of grievance statuses.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="report-bars">
+
+                <div class="report-row">
+
+                    <div class="report-label">
+                        <span>Pending</span>
+                        <strong>1</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill pending-fill"
+                             style="width: 33%;">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="report-row">
+
+                    <div class="report-label">
+                        <span>In Progress</span>
+                        <strong>1</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-fill-blue"
+                             style="width: 33%;">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="report-row">
+
+                    <div class="report-label">
+                        <span>Resolved</span>
+                        <strong>1</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill resolved-fill"
+                             style="width: 33%;">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="report-section">
+
+            <h2>Administrative Summary</h2>
+
+            <p class="report-summary-text">
+                This section provides administrators with a quick
+                overview of grievance activity. Real statistics will
+                be loaded from the backend after API integration.
+            </p>
+
+        </section>
+
+
+        <footer class="dashboard-footer">
+            AI Local Governance Assistant • Administrator Portal
+        </footer>
+
+    </div>
+
+</body>
+</html>
