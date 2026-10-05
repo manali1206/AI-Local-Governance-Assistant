@@ -9,8 +9,7 @@ import java.net.URL
 
 suspend fun askGemini(question: String): String =
     withContext(Dispatchers.IO) {
-
-        val url = URL("http://127.0.0.1:8000/chat")
+        val url = URL("http://127.0.0.1:8000/api/ask")
         val connection = url.openConnection() as HttpURLConnection
 
         try {

@@ -492,3 +492,12 @@ User question:
             "status": "error",
             "answer": "AI service error. Please try again later."
         }
+
+        # =====================================================
+# WEEK 6 - AI/NLP API
+# =====================================================
+
+@app.post("/api/ask")
+def ask_ai(request: ChatRequest):
+
+    return chat(request)
