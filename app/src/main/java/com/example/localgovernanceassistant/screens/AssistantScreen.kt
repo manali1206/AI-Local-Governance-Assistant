@@ -1,4 +1,3 @@
-
 package com.example.localgovernanceassistant.screens
 
 import androidx.compose.foundation.layout.*
@@ -9,7 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.localgovernanceassistant.askGemini
+import com.example.localgovernanceassistant.AskRequest
+import com.example.localgovernanceassistant.RetrofitClient
 import kotlinx.coroutines.launch
 
 data class AssistantMessage(
@@ -52,7 +52,9 @@ fun AssistantScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+
             items(messages) { message ->
+
                 Text(
                     text = if (message.isUser) {
                         "You: ${message.message}"
@@ -89,6 +91,7 @@ fun AssistantScreen(
 
             Button(
                 onClick = {
+
                     val userQuestion = question.trim()
 
                     if (userQuestion.isNotEmpty() && !isLoading) {
@@ -104,16 +107,51 @@ fun AssistantScreen(
                         isLoading = true
 
                         scope.launch {
-                            val answer = askGemini(userQuestion)
 
-                            messages.add(
-                                AssistantMessage(
-                                    message = answer,
-                                    isUser = false
+                            try {
+
+                                val response = RetrofitClient.apiService.askAI(
+                                    AskRequest(
+                                        question = userQuestion
+                                    )
                                 )
-                            )
 
-                            isLoading = false
+                                if (response.isSuccessful) {
+
+                                    val answer =
+                                        response.body()?.answer
+                                            ?: "No answer received from server."
+
+                                    messages.add(
+                                        AssistantMessage(
+                                            message = answer,
+                                            isUser = false
+                                        )
+                                    )
+
+                                } else {
+
+                                    messages.add(
+                                        AssistantMessage(
+                                            message = "Server error: ${response.code()}",
+                                            isUser = false
+                                        )
+                                    )
+                                }
+
+                            } catch (e: Exception) {
+
+                                messages.add(
+                                    AssistantMessage(
+                                        message = "Connection error: ${e.message ?: "Unable to connect to server."}",
+                                        isUser = false
+                                    )
+                                )
+
+                            } finally {
+
+                                isLoading = false
+                            }
                         }
                     }
                 },

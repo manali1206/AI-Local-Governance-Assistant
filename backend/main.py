@@ -2,7 +2,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from google import genai
 from dotenv import load_dotenv
+from supabase import create_client, Client
 import os
+import uuid
+from datetime import datetime
 
 
 # =========================================================
@@ -12,13 +15,45 @@ import os
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")
+
+
+# =========================================================
+# SUPABASE CONNECTION
+# =========================================================
+
+if not SUPABASE_URL or not SUPABASE_SECRET_KEY:
+
+    print("WARNING: Supabase is not configured.")
+    supabase = None
+
+else:
+
+    print("Supabase configuration loaded successfully.")
+
+    supabase: Client = create_client(
+        SUPABASE_URL,
+        SUPABASE_SECRET_KEY
+    )
+
+
+# =========================================================
+# GEMINI CONNECTION
+# =========================================================
 
 if not GEMINI_API_KEY:
+
     print("WARNING: GEMINI_API_KEY is not configured.")
     gemini_client = None
+
 else:
+
     print("Gemini API key loaded successfully.")
-    gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+
+    gemini_client = genai.Client(
+        api_key=GEMINI_API_KEY
+    )
 
 
 # =========================================================
@@ -33,11 +68,21 @@ app = FastAPI(
 
 
 # =========================================================
-# REQUEST MODEL
+# REQUEST MODELS
 # =========================================================
 
 class ChatRequest(BaseModel):
     question: str
+
+
+class GrievanceRequest(BaseModel):
+    user_id: str
+    title: str
+    description: str
+
+
+class GrievanceStatusUpdate(BaseModel):
+    status: str
 
 
 # =========================================================
@@ -257,6 +302,7 @@ marathi_answers = {
 
 @app.get("/")
 def home():
+
     return {
         "status": "success",
         "message": "AI Local Governance Assistant Backend is running"
@@ -269,6 +315,7 @@ def home():
 
 @app.get("/health")
 def health():
+
     return {
         "status": "ok"
     }
@@ -284,6 +331,7 @@ def chat(request: ChatRequest):
     question = request.question.strip()
 
     if not question:
+
         raise HTTPException(
             status_code=400,
             detail="Question cannot be empty"
@@ -311,7 +359,6 @@ def chat(request: ChatRequest):
     # KEYWORD FALLBACK ANSWERS
     # =====================================================
 
-    # Water
     if (
         "water supply" in question_lower
         or "no water" in question_lower
@@ -323,11 +370,14 @@ def chat(request: ChatRequest):
 
         return {
             "status": "success",
-            "answer": "If there is no water supply in your area, please report the problem to the Gram Panchayat or the concerned local authority. Mention your exact location and clearly describe the water supply problem."
+            "answer":
+                "If there is no water supply in your area, please report "
+                "the problem to the Gram Panchayat or the concerned local "
+                "authority. Mention your exact location and clearly "
+                "describe the water supply problem."
         }
 
 
-    # Street light
     if (
         "street light" in question_lower
         or "streetlight" in question_lower
@@ -337,11 +387,13 @@ def chat(request: ChatRequest):
 
         return {
             "status": "success",
-            "answer": "If a street light is not working, report it to the Gram Panchayat or concerned local authority. Mention the exact location of the street light."
+            "answer":
+                "If a street light is not working, report it to the "
+                "Gram Panchayat or concerned local authority. Mention "
+                "the exact location of the street light."
         }
 
 
-    # Road
     if (
         "bad road" in question_lower
         or "road is damaged" in question_lower
@@ -353,11 +405,13 @@ def chat(request: ChatRequest):
 
         return {
             "status": "success",
-            "answer": "If a road is damaged or in poor condition, report it to the Gram Panchayat or concerned local authority. Mention the exact location and describe the problem."
+            "answer":
+                "If a road is damaged or in poor condition, report it "
+                "to the Gram Panchayat or concerned local authority. "
+                "Mention the exact location and describe the problem."
         }
 
 
-    # Garbage
     if (
         "garbage" in question_lower
         or "waste collection" in question_lower
@@ -368,7 +422,10 @@ def chat(request: ChatRequest):
 
         return {
             "status": "success",
-            "answer": "If garbage is not being collected, report the problem to the Gram Panchayat or concerned local authority. Mention the exact location and describe the problem."
+            "answer":
+                "If garbage is not being collected, report the problem "
+                "to the Gram Panchayat or concerned local authority. "
+                "Mention the exact location and describe the problem."
         }
 
 
@@ -394,7 +451,8 @@ def chat(request: ChatRequest):
 
         return {
             "status": "error",
-            "answer": "Gemini API key is not configured. Please check the .env file."
+            "answer":
+                "Gemini API key is not configured. Please check the .env file."
         }
 
 
@@ -463,41 +521,339 @@ User question:
 
         print("Gemini Error:", error_message)
 
-
-        if "429" in error_message or "RESOURCE_EXHAUSTED" in error_message:
-
-            return {
-                "status": "error",
-                "answer": "AI service quota exceeded. Please try again later."
-            }
-
-
-        if "503" in error_message or "UNAVAILABLE" in error_message:
+        if (
+            "429" in error_message
+            or "RESOURCE_EXHAUSTED" in error_message
+        ):
 
             return {
                 "status": "error",
-                "answer": "AI service is temporarily busy. Please try again later."
+                "answer":
+                    "AI service quota exceeded. Please try again later."
             }
 
-
-        if "401" in error_message or "403" in error_message:
+        if (
+            "503" in error_message
+            or "UNAVAILABLE" in error_message
+        ):
 
             return {
                 "status": "error",
-                "answer": "Gemini API authentication failed. Please check the API key."
+                "answer":
+                    "AI service is temporarily busy. Please try again later."
             }
 
+        if (
+            "401" in error_message
+            or "403" in error_message
+        ):
+
+            return {
+                "status": "error",
+                "answer":
+                    "Gemini API authentication failed. Please check the API key."
+            }
 
         return {
             "status": "error",
-            "answer": "AI service error. Please try again later."
+            "answer":
+                "AI service error. Please try again later."
         }
 
-        # =====================================================
+
+# =========================================================
 # WEEK 6 - AI/NLP API
-# =====================================================
+# =========================================================
 
 @app.post("/api/ask")
 def ask_ai(request: ChatRequest):
 
     return chat(request)
+
+
+# =========================================================
+# WEEK 6 - GOVERNMENT SCHEMES API
+# =========================================================
+
+@app.get("/api/schemes")
+def get_schemes():
+
+    schemes = [
+
+        {
+            "name": "PM-KISAN",
+            "category": "Farmer Welfare",
+            "purpose":
+                "Provides financial support to eligible farmer families.",
+            "benefits":
+                "Financial assistance as provided under the scheme.",
+            "eligibility":
+                "Eligibility depends on the official PM-KISAN scheme rules.",
+            "application":
+                "Apply or check status through the official PM-KISAN portal."
+        },
+
+        {
+            "name": "Pradhan Mantri Awas Yojana",
+            "category": "Housing",
+            "purpose":
+                "Supports eligible beneficiaries for housing-related assistance.",
+            "benefits":
+                "Housing assistance according to the applicable scheme guidelines.",
+            "eligibility":
+                "Eligibility depends on the applicable PMAY guidelines.",
+            "application":
+                "Contact the concerned local authority or use the official government portal."
+        },
+
+        {
+            "name": "MGNREGA",
+            "category": "Employment",
+            "purpose":
+                "Provides employment opportunities in rural areas.",
+            "benefits":
+                "Wage employment for eligible rural households according to the scheme.",
+            "eligibility":
+                "Eligibility depends on the official MGNREGA rules.",
+            "application":
+                "Contact the local Gram Panchayat for registration and employment-related information."
+        },
+
+        {
+            "name": "Ayushman Bharat",
+            "category": "Healthcare",
+            "purpose":
+                "Provides health coverage to eligible beneficiaries.",
+            "benefits":
+                "Healthcare coverage according to the applicable scheme provisions.",
+            "eligibility":
+                "Eligibility depends on the official scheme criteria.",
+            "application":
+                "Check eligibility through the official government portal or concerned authority."
+        },
+
+        {
+            "name": "Swachh Bharat Mission",
+            "category": "Sanitation",
+            "purpose":
+                "Supports sanitation and cleanliness initiatives.",
+            "benefits":
+                "Support for sanitation-related activities according to applicable guidelines.",
+            "eligibility":
+                "Eligibility depends on the relevant programme and local guidelines.",
+            "application":
+                "Contact the concerned local authority for applicable information."
+        },
+
+        {
+            "name": "Education Scholarships",
+            "category": "Education",
+            "purpose":
+                "Provides financial support for eligible students.",
+            "benefits":
+                "Scholarship assistance according to the applicable scholarship programme.",
+            "eligibility":
+                "Eligibility varies by scholarship programme.",
+            "application":
+                "Check the relevant official scholarship portal for current requirements."
+        }
+    ]
+
+    return {
+        "status": "success",
+        "schemes": schemes
+    }
+
+
+# =========================================================
+# WEEK 6 - CREATE GRIEVANCE API
+# =========================================================
+
+@app.post("/api/grievances")
+def create_grievance(request: GrievanceRequest):
+
+    if supabase is None:
+
+        raise HTTPException(
+            status_code=500,
+            detail="Supabase is not configured."
+        )
+
+    grievance_id = str(uuid.uuid4())
+
+    reference_id = (
+        "GRV-"
+        + datetime.now().strftime("%Y%m%d%H%M%S")
+    )
+
+    grievance_data = {
+
+        "id": grievance_id,
+
+        "reference_id": reference_id,
+
+        "user_id": request.user_id,
+
+        "title": request.title,
+
+        "description": request.description,
+
+        "status": "Pending"
+    }
+
+    try:
+
+        response = (
+            supabase
+            .table("Grievances")
+            .insert(grievance_data)
+            .execute()
+        )
+
+        if not response.data:
+
+            raise HTTPException(
+                status_code=500,
+                detail="Grievance could not be created."
+            )
+
+        return {
+
+            "status": "success",
+
+            "message": "Grievance created successfully.",
+
+            "grievance": response.data[0]
+        }
+
+    except HTTPException:
+
+        raise
+
+    except Exception as e:
+
+        print("Grievance Error:", str(e))
+
+        # TEMPORARY: show actual Supabase error for debugging
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
+
+# =========================================================
+# WEEK 6 - GET USER GRIEVANCES API
+# =========================================================
+
+@app.get("/api/grievances/{user_id}")
+def get_user_grievances(user_id: str):
+
+    if supabase is None:
+
+        raise HTTPException(
+            status_code=500,
+            detail="Supabase is not configured."
+        )
+
+    try:
+
+        response = (
+            supabase
+            .table("Grievances")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("created_at", desc=True)
+            .execute()
+        )
+
+        return {
+
+            "status": "success",
+
+            "grievances": response.data
+        }
+
+    except Exception as e:
+
+        print("Get Grievances Error:", str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to fetch grievances."
+        )
+
+
+# =========================================================
+# WEEK 6 - UPDATE GRIEVANCE STATUS API
+# =========================================================
+
+@app.patch("/api/grievances/{grievance_id}/status")
+def update_grievance_status(
+    grievance_id: str,
+    request: GrievanceStatusUpdate
+):
+
+    if supabase is None:
+
+        raise HTTPException(
+            status_code=500,
+            detail="Supabase is not configured."
+        )
+
+    allowed_statuses = [
+        "Pending",
+        "In Progress",
+        "Resolved",
+        "Rejected"
+    ]
+
+    if request.status not in allowed_statuses:
+
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Invalid status. Allowed statuses are: "
+                "Pending, In Progress, Resolved, Rejected"
+            )
+        )
+
+    try:
+
+        response = (
+            supabase
+            .table("Grievances")
+            .update({
+                "status": request.status
+            })
+            .eq("id", grievance_id)
+            .execute()
+        )
+
+        if not response.data:
+
+            raise HTTPException(
+                status_code=404,
+                detail="Grievance not found."
+            )
+
+        return {
+
+            "status": "success",
+
+            "message": "Grievance status updated successfully.",
+
+            "grievance": response.data[0]
+        }
+
+    except HTTPException:
+
+        raise
+
+    except Exception as e:
+
+        print("Update Grievance Error:", str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to update grievance status."
+        )
