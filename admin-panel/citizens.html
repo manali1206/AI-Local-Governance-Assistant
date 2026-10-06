@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Citizens - AI Local Governance</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="logo-small">
+                    ALG
+                </div>
+
+                <div>
+                    <h2>AI Local</h2>
+                    <span>Governance</span>
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <a href="dashboard.html">
+                    Dashboard
+                </a>
+
+                <a href="dashboard.html#grievances">
+                    Grievances
+                </a>
+
+                <a href="citizens.html" class="active">
+                    Citizens
+                </a>
+
+                <a href="reports.html">
+                    Reports
+                </a>
+
+            </nav>
+
+
+            <a href="index.html" class="logout-button">
+                Logout
+            </a>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+
+            <header class="dashboard-header">
+
+                <div>
+
+                    <p class="admin-label">
+                        Administrator
+                    </p>
+
+                    <h1>
+                        Citizens
+                    </h1>
+
+                    <p class="dashboard-description">
+                        View registered citizens and their grievance activity.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- Citizen Summary -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <span>
+                        Total Citizens
+                    </span>
+
+                    <strong id="totalCitizens">
+                        3
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>
+                        Active Citizens
+                    </span>
+
+                    <strong id="activeCitizens">
+                        3
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>
+                        With Grievances
+                    </span>
+
+                    <strong id="citizensWithGrievances">
+                        3
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span>
+                        Total Grievances
+                    </span>
+
+                    <strong id="totalCitizenGrievances">
+                        7
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- Citizens Table -->
+            <section class="grievance-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Registered Citizens
+                        </h2>
+
+                        <p>
+                            Search and review citizen account information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Search and Filter -->
+                <div class="table-controls">
+
+                    <input
+                        type="text"
+                        id="citizenSearch"
+                        class="search-box"
+                        placeholder="Search by name or email..."
+                    >
+
+
+                    <select
+                        id="citizenStatusFilter"
+                        class="status-filter"
+                    >
+
+                        <option value="All Status">
+                            All Status
+                        </option>
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Citizens Table -->
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Grievances
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="citizensTableBody">
+
+                            <tr>
+
+                                <td>
+                                    Pranaya Patil
+                                </td>
+
+                                <td>
+                                    pranaya@example.com
+                                </td>
+
+                                <td>
+                                    3
+                                </td>
+
+                                <td>
+
+                                    <span class="status-badge active-badge">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="citizen.html?id=CIT001"
+                                        class="action-button"
+                                    >
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Rahul Sharma
+                                </td>
+
+                                <td>
+                                    rahul@example.com
+                                </td>
+
+                                <td>
+                                    1
+                                </td>
+
+                                <td>
+
+                                    <span class="status-badge active-badge">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="citizen.html?id=CIT002"
+                                        class="action-button"
+                                    >
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Sneha Kulkarni
+                                </td>
+
+                                <td>
+                                    sneha@example.com
+                                </td>
+
+                                <td>
+                                    3
+                                </td>
+
+                                <td>
+
+                                    <span class="status-badge active-badge">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="citizen.html?id=CIT003"
+                                        class="action-button"
+                                    >
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <footer class="dashboard-footer">
+                AI Local Governance Assistant • Administrator Portal
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <script src="citizens.js"></script>
+
+</body>
+</html>
