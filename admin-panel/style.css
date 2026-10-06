@@ -231,6 +231,7 @@ button:hover {
 .logout-button:hover {
     background: rgba(255, 255, 255, 0.1);
 }
+
 .dashboard-main {
     flex: 1;
     padding: 30px;
@@ -793,4 +794,39 @@ td {
         max-width: 100%;
         margin-right: 0;
     }
+}
+
+
+/* ============================= */
+/* CITIZEN DETAILS */
+/* ============================= */
+
+.citizen-grievance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #edf0f2;
+}
+
+.citizen-grievance-item:last-child {
+    border-bottom: none;
+}
+
+.citizen-grievance-item strong {
+    color: #123b64;
+    font-size: 14px;
+}
+
+.citizen-grievance-item p {
+    margin-top: 5px;
+    color: #68737d;
+    font-size: 13px;
+}
+
+.active-badge {
+    background: #dcfce7;
+    color: #236b37;
 }
