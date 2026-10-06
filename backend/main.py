@@ -1,17 +1,22 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Header, Depends
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from supabase import create_client, Client
+from datetime import datetime, timezone
+
+
+# =============================
+# ENVIRONMENT
+# =============================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ENV_FILE = os.path.join(BASE_DIR, ".env")
 
 load_dotenv(ENV_FILE)
-
 
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -23,15 +28,25 @@ ADMIN_EMAILS = [
     if email.strip()
 ]
 
+
 if not SUPABASE_URL or not SUPABASE_SECRET_KEY:
-    raise RuntimeError("Supabase environment variables are missing")
+    raise RuntimeError(
+        "Supabase environment variables are missing"
+    )
+
 
 supabase: Client = create_client(
     SUPABASE_URL,
     SUPABASE_SECRET_KEY
 )
 
+
+# =============================
+# FASTAPI APP
+# =============================
+
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -41,72 +56,94 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# =============================
+# AUTHENTICATION
+# =============================
+
 security = HTTPBearer()
 
-def verify_admin(authorization: str | None):
-    if not authorization:
-        raise HTTPException(
-            status_code=401,
-            detail="Authorization header is required"
-        )
 
-    if not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid authorization header"
-        )
-
-    token = authorization.replace("Bearer ", "", 1).strip()
+def verify_admin(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
 
     try:
+
         user_response = supabase.auth.get_user(token)
+
         user = user_response.user
 
         if not user or not user.email:
+
             raise HTTPException(
                 status_code=401,
                 detail="Invalid authentication token"
             )
 
+
         if user.email.lower() not in ADMIN_EMAILS:
+
             raise HTTPException(
                 status_code=403,
                 detail="Admin access required"
             )
 
+
         return user
+
 
     except HTTPException:
         raise
 
-    except Exception:
+    except Exception as error:
+
+        print(
+            "AUTHENTICATION ERROR:",
+            repr(error)
+        )
+
         raise HTTPException(
             status_code=401,
             detail="Invalid authentication token"
         )
 
+
+# =============================
+# REQUEST MODELS
+# =============================
+
 class StatusUpdateRequest(BaseModel):
     status: str
 
 
+# =============================
+# BASIC ROUTES
+# =============================
+
 @app.get("/")
 def home():
+
     return {
-        "message": "AI Local Governance Assistant Backend is running"
+        "message":
+        "AI Local Governance Assistant Backend is running"
     }
 
 
 @app.get("/health")
 def health_check():
+
     return {
         "status": "ok"
     }
 
 
-
 @app.get("/test-supabase")
 def test_supabase():
+
     try:
+
         response = (
             supabase
             .from_("Grievances")
@@ -117,23 +154,30 @@ def test_supabase():
 
         return {
             "status": "success",
-            "message": "Backend connected to Supabase successfully"
+            "message":
+            "Backend connected to Supabase successfully"
         }
 
-    except Exception as e:
+    except Exception as error:
+
         raise HTTPException(
             status_code=500,
-            detail=f"Supabase connection failed: {str(e)}"
+            detail=
+            f"Supabase connection failed: {str(error)}"
         )
 
 
+# =============================
+# ADMIN DASHBOARD
+# =============================
+
 @app.get("/admin/dashboard")
 def admin_dashboard(
-    credentials: HTTPAuthorizationCredentials = Depends(security)
+    user=Depends(verify_admin)
 ):
-    verify_admin(f"Bearer {credentials.credentials}")
 
     try:
+
         response = (
             supabase
             .from_("Grievances")
@@ -146,22 +190,26 @@ def admin_dashboard(
         total = len(grievances)
 
         pending = sum(
-            1 for grievance in grievances
+            1
+            for grievance in grievances
             if grievance.get("status") == "Pending"
         )
 
         in_progress = sum(
-            1 for grievance in grievances
+            1
+            for grievance in grievances
             if grievance.get("status") == "In Progress"
         )
 
         resolved = sum(
-            1 for grievance in grievances
+            1
+            for grievance in grievances
             if grievance.get("status") == "Resolved"
         )
 
         rejected = sum(
-            1 for grievance in grievances
+            1
+            for grievance in grievances
             if grievance.get("status") == "Rejected"
         )
 
@@ -174,22 +222,32 @@ def admin_dashboard(
             "rejected": rejected
         }
 
-    except Exception as e:
+    except Exception as error:
+
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to load dashboard statistics: {str(e)}"
+            detail=
+            f"Failed to load dashboard statistics: {str(error)}"
         )
+
+
+# =============================
+# ADMIN GRIEVANCES
+# =============================
+
 @app.get("/admin/grievances")
 def admin_grievances(
-    credentials: HTTPAuthorizationCredentials = Depends(security)
+    user=Depends(verify_admin)
 ):
-    verify_admin(f"Bearer {credentials.credentials}")
 
     try:
+
         response = (
             supabase
             .from_("Grievances")
-            .select("id, status")
+            .select(
+                "id,reference_id,title,status,created_at"
+            )
             .execute()
         )
 
@@ -198,31 +256,41 @@ def admin_grievances(
             "grievances": response.data or []
         }
 
-    except Exception as e:
+    except Exception as error:
+
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to load grievances: {str(e)}"
+            detail=
+            f"Failed to load grievances: {str(error)}"
         )
+
+
+# =============================
+# ADMIN GRIEVANCE DETAILS
+# =============================
+
 @app.get("/admin/grievances/{grievance_id}")
-def admin_grievance_detail(
+def get_admin_grievance(
     grievance_id: str,
-    credentials: HTTPAuthorizationCredentials = Depends(security)
+    user=Depends(verify_admin)
 ):
-    verify_admin(f"Bearer {credentials.credentials}")
 
     try:
+
         response = (
             supabase
-            .from_("Grievances")
-            .select("id, status")
+            .table("Grievances")
+            .select(
+                "id,reference_id,title,description,"
+                "user_id,status,created_at"
+            )
             .eq("id", grievance_id)
             .single()
             .execute()
         )
 
-        grievance = response.data
+        if not response.data:
 
-        if not grievance:
             raise HTTPException(
                 status_code=404,
                 detail="Grievance not found"
@@ -230,27 +298,35 @@ def admin_grievance_detail(
 
         return {
             "status": "success",
-            "grievance": grievance
+            "grievance": response.data
         }
 
     except HTTPException:
         raise
 
-    except Exception as e:
+    except Exception as error:
+
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to load grievance: {str(e)}"
+            detail=
+            f"Failed to load grievance: {str(error)}"
         )
 
 
-@app.get("/admin/grievances/{grievance_id}/history")
+# =============================
+# STATUS HISTORY
+# =============================
+
+@app.get(
+    "/admin/grievances/{grievance_id}/history"
+)
 def grievance_status_history(
     grievance_id: str,
-    credentials: HTTPAuthorizationCredentials = Depends(security)
+    user=Depends(verify_admin)
 ):
-    verify_admin(f"Bearer {credentials.credentials}")
 
     try:
+
         response = (
             supabase
             .from_("grievance_status_history")
@@ -264,8 +340,173 @@ def grievance_status_history(
             "history": response.data or []
         }
 
-    except Exception as e:
+    except Exception as error:
+
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to load grievance history: {str(e)}"
+            detail=
+            f"Failed to load grievance history: {str(error)}"
+        )
+
+
+# =============================
+# UPDATE GRIEVANCE STATUS
+# =============================
+
+@app.patch(
+    "/grievances/{grievance_id}/status"
+)
+def update_grievance_status(
+    grievance_id: str,
+    request: StatusUpdateRequest,
+    user=Depends(verify_admin)
+):
+
+    allowed_statuses = [
+        "Pending",
+        "In Progress",
+        "Resolved",
+        "Rejected"
+    ]
+
+
+    if request.status not in allowed_statuses:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid status"
+        )
+
+
+    try:
+
+        # =============================
+        # GET CURRENT GRIEVANCE
+        # =============================
+
+        current_response = (
+            supabase
+            .table("Grievances")
+            .select("*")
+            .eq("id", grievance_id)
+            .single()
+            .execute()
+        )
+
+        current_data = current_response.data
+
+
+        if not current_data:
+
+            raise HTTPException(
+                status_code=404,
+                detail="Grievance not found"
+            )
+
+
+        old_status = current_data.get("status")
+
+
+        # =============================
+        # UPDATE GRIEVANCE
+        # =============================
+
+        update_response = (
+            supabase
+            .table("Grievances")
+            .update({
+                "status": request.status
+            })
+            .eq("id", grievance_id)
+            .execute()
+        )
+
+
+        print(
+            "STATUS UPDATE RESULT:",
+            update_response.data
+        )
+
+
+        if not update_response.data:
+
+            raise HTTPException(
+                status_code=500,
+                detail=
+                "Grievance status was not updated"
+            )
+
+
+        # =============================
+        # INSERT STATUS HISTORY
+        # =============================
+
+        history_response = (
+            supabase
+            .table("grievance_status_history")
+            .insert({
+                "grievance_id": grievance_id,
+                "old_status": old_status,
+                "new_status": request.status,
+                "changed_at":
+                    datetime.now(
+                        timezone.utc
+                    ).isoformat()
+            })
+            .execute()
+        )
+
+
+        print(
+            "HISTORY INSERT RESULT:",
+            history_response.data
+        )
+
+
+        # =============================
+        # GET UPDATED GRIEVANCE
+        # =============================
+
+        updated_response = (
+            supabase
+            .table("Grievances")
+            .select("*")
+            .eq("id", grievance_id)
+            .single()
+            .execute()
+        )
+
+
+        print(
+            "UPDATED GRIEVANCE:",
+            updated_response.data
+        )
+
+
+        return {
+            "message":
+                "Status updated successfully",
+
+            "grievance":
+                updated_response.data,
+
+            "history":
+                history_response.data
+        }
+
+
+    except HTTPException:
+        raise
+
+
+    except Exception as error:
+
+        print(
+            "STATUS UPDATE ERROR:",
+            repr(error)
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(error)
         )
