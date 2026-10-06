@@ -1,9 +1,11 @@
 package com.example.localgovernanceassistant.api
 
+import com.example.localgovernanceassistant.model.Grievance
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.PATCH
 import retrofit2.http.Header
+import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 data class HealthResponse(
@@ -25,6 +27,16 @@ interface ApiService {
 
     @GET("health")
     suspend fun checkHealth(): HealthResponse
+
+    @POST("api/grievances")
+    suspend fun submitGrievance(
+        @Body grievance: Grievance
+    ): Grievance
+
+    @GET("api/grievances/{userId}")
+    suspend fun getUserGrievances(
+        @Path("userId") userId: String
+    ): List<Grievance>
 
     @PATCH("grievances/{grievanceId}/status")
     suspend fun updateGrievanceStatus(

@@ -126,6 +126,64 @@ def chat(request: ChatRequest):
         "response": f"Backend received: {request.message}"
     }
 
+class GrievanceRequest(BaseModel):
+    user_id: str
+    title: str
+    description: str
+
+
+@app.post("/api/grievances")
+def create_grievance(request: GrievanceRequest):
+    try:
+        response = (
+            supabase
+            .from_("Grievances")
+            .insert({
+                "user_id": request.user_id,
+                "title": request.title,
+                "description": request.description,
+                "status": "Pending"
+            })
+            .execute()
+        )
+
+        if not response.data:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to create grievance"
+            )
+
+        return response.data[0]
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to submit grievance: {str(e)}"
+        )
+
+
+@app.get("/api/grievances/{user_id}")
+def get_user_grievances(user_id: str):
+    try:
+        response = (
+            supabase
+            .from_("Grievances")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("created_at", desc=True)
+            .execute()
+        )
+
+        return response.data or []
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch grievances: {str(e)}"
+        )
 
 @app.patch("/grievances/{grievance_id}/status")
 def update_grievance_status(

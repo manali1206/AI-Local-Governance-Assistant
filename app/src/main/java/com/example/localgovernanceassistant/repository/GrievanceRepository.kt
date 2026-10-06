@@ -1,33 +1,21 @@
 package com.example.localgovernanceassistant.repository
 
+import com.example.localgovernanceassistant.api.RetrofitClient
 import com.example.localgovernanceassistant.model.Grievance
-import com.example.localgovernanceassistant.supabaseClient
-import io.github.jan.supabase.postgrest.from
-
 
 class GrievanceRepository {
 
+    private val apiService = RetrofitClient.apiService
+
     suspend fun submitGrievance(
         grievance: Grievance
-    ) {
-        supabaseClient
-            .from("Grievances")
-            .insert(grievance)
+    ): Grievance {
+        return apiService.submitGrievance(grievance)
     }
 
     suspend fun getUserGrievances(
         userId: String
     ): List<Grievance> {
-
-        return supabaseClient
-            .from("Grievances")
-            .select {
-                filter {
-                    eq("user_id", userId)
-                }
-
-            }
-            .decodeList<Grievance>()
-            .sortedByDescending { it.createdAt }
+        return apiService.getUserGrievances(userId)
     }
 }

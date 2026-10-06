@@ -1,16 +1,15 @@
 package com.example.localgovernanceassistant.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class Grievance(
+
     val id: String? = null,
 
-    @SerialName("reference_id")
+    @SerializedName("reference_id")
     val referenceId: String? = null,
 
-    @SerialName("user_id")
+    @SerializedName("user_id")
     val userId: String,
 
     val title: String,
@@ -19,6 +18,6 @@ data class Grievance(
 
     val status: String = "Pending",
 
-    @SerialName("created_at")
+    @SerializedName("created_at")
     val createdAt: String? = null
 )

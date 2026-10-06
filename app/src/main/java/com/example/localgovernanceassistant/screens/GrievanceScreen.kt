@@ -1,5 +1,6 @@
 package com.example.localgovernanceassistant.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
@@ -21,21 +23,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.localgovernanceassistant.api.RetrofitClient
 import com.example.localgovernanceassistant.model.Grievance
 import com.example.localgovernanceassistant.repository.GrievanceRepository
 import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.Color
 
 @Composable
 fun GrievanceStatus(status: String) {
+
     val statusText = when (status) {
         "Pending" -> "Pending"
         "In Progress" -> "In Progress"
@@ -79,7 +80,9 @@ fun GrievanceScreen() {
         mutableStateOf(false)
     }
 
-    var isRefreshing by remember { mutableStateOf(false) }
+    var isRefreshing by remember {
+        mutableStateOf(false)
+    }
 
     var grievances by remember {
         mutableStateOf<List<Grievance>>(emptyList())
@@ -91,16 +94,31 @@ fun GrievanceScreen() {
         GrievanceRepository()
     }
 
+    /*
+     * Check Android -> FastAPI connection
+     * and load user's grievances.
+     */
     LaunchedEffect(Unit) {
+
+        try {
+            val response = RetrofitClient.apiService.checkHealth()
+            message = "Backend: ${response.status}"
+        } catch (e: Exception) {
+            message = "Backend connection failed: ${e.message}"
+        }
 
         val currentUser = supabaseClient.auth.currentUserOrNull()
 
         if (currentUser != null) {
 
             try {
-                grievances = repository.getUserGrievances(currentUser.id)
+                grievances =
+                    repository.getUserGrievances(currentUser.id)
+
             } catch (e: Exception) {
-                message = e.message ?: "Failed to load grievances."
+
+                message =
+                    e.message ?: "Failed to load grievances."
             }
         }
     }
@@ -124,7 +142,9 @@ fun GrievanceScreen() {
             modifier = Modifier.padding(top = 6.dp)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
 
         Card(
             modifier = Modifier.fillMaxWidth()
@@ -140,7 +160,9 @@ fun GrievanceScreen() {
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(
+                    modifier = Modifier.height(14.dp)
+                )
 
                 OutlinedTextField(
                     value = title,
@@ -155,7 +177,9 @@ fun GrievanceScreen() {
                     singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(
+                    modifier = Modifier.height(12.dp)
+                )
 
                 OutlinedTextField(
                     value = description,
@@ -170,13 +194,20 @@ fun GrievanceScreen() {
                     minLines = 4
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
 
                 Button(
                     onClick = {
 
-                        if (title.isBlank() || description.isBlank()) {
-                            message = "Please enter title and description."
+                        if (title.isBlank() ||
+                            description.isBlank()
+                        ) {
+
+                            message =
+                                "Please enter title and description."
+
                             return@Button
                         }
 
@@ -184,7 +215,10 @@ fun GrievanceScreen() {
                             supabaseClient.auth.currentUserOrNull()
 
                         if (currentUser == null) {
-                            message = "Please login before submitting a grievance."
+
+                            message =
+                                "Please login before submitting a grievance."
+
                             return@Button
                         }
 
@@ -201,20 +235,26 @@ fun GrievanceScreen() {
                                     description = description.trim()
                                 )
 
-                                repository.submitGrievance(grievance)
+                                repository.submitGrievance(
+                                    grievance
+                                )
 
                                 title = ""
                                 description = ""
 
                                 grievances =
-                                    repository.getUserGrievances(currentUser.id)
+                                    repository.getUserGrievances(
+                                        currentUser.id
+                                    )
 
-                                message = "Grievance submitted successfully."
+                                message =
+                                    "Grievance submitted successfully."
 
                             } catch (e: Exception) {
 
                                 message =
-                                    e.message ?: "Failed to submit grievance."
+                                    e.message
+                                        ?: "Failed to submit grievance."
 
                             } finally {
 
@@ -225,6 +265,7 @@ fun GrievanceScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isLoading
                 ) {
+
                     Text(
                         if (isLoading) {
                             "Submitting..."
@@ -236,38 +277,67 @@ fun GrievanceScreen() {
 
                 if (message.isNotEmpty()) {
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(
+                        modifier = Modifier.height(12.dp)
+                    )
 
-                    Text(text = message)
+                    Text(
+                        text = message
+                    )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
 
         Text(
             text = "My Grievances",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
+
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+
         Button(
             onClick = {
-                val currentUser = supabaseClient.auth.currentUserOrNull()
+
+                val currentUser =
+                    supabaseClient.auth.currentUserOrNull()
 
                 if (currentUser == null) {
-                    message = "Please login to view your grievances."
+
+                    message =
+                        "Please login to view your grievances."
+
                     return@Button
                 }
 
                 scope.launch {
+
                     isRefreshing = true
 
                     try {
-                        grievances = repository.getUserGrievances(currentUser.id)
-                        message = "Grievances refreshed."
+
+                        grievances =
+                            repository.getUserGrievances(
+                                currentUser.id
+                            )
+
+                        message =
+                            "Grievances refreshed."
+
                     } catch (e: Exception) {
-                        message = e.message ?: "Failed to refresh grievances."
+
+                        message =
+                            e.message
+                                ?: "Failed to refresh grievances."
+
                     } finally {
+
                         isRefreshing = false
                     }
                 }
@@ -275,23 +345,31 @@ fun GrievanceScreen() {
             modifier = Modifier.fillMaxWidth(),
             enabled = !isRefreshing && !isLoading
         ) {
+
             Text(
-                if (isRefreshing) "Refreshing..." else "Refresh Status"
+                if (isRefreshing) {
+                    "Refreshing..."
+                } else {
+                    "Refresh Status"
+                }
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Spacer(modifier = Modifier.height(8.dp))
-
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
 
         if (grievances.isEmpty()) {
+
             Text(
                 text = "No grievances submitted yet.",
                 fontSize = 14.sp,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(
+                    vertical = 8.dp
+                )
             )
-        }else {
+
+        } else {
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth()
@@ -308,11 +386,19 @@ fun GrievanceScreen() {
                         Column(
                             modifier = Modifier.padding(16.dp)
                         ) {
+
                             Text(
-                                text = "Grievance ID: ${grievance.referenceId ?: "N/A"}",
+                                text =
+                                    "Grievance ID: ${
+                                        grievance.referenceId
+                                            ?: "N/A"
+                                    }",
                                 fontSize = 12.sp
                             )
-                            Spacer(modifier = Modifier.height(6.dp))
+
+                            Spacer(
+                                modifier = Modifier.height(6.dp)
+                            )
 
                             Text(
                                 text = grievance.title,
@@ -320,22 +406,32 @@ fun GrievanceScreen() {
                                 fontWeight = FontWeight.Bold
                             )
 
-                            Spacer(modifier = Modifier.height(6.dp))
+                            Spacer(
+                                modifier = Modifier.height(6.dp)
+                            )
 
                             Text(
                                 text = grievance.description,
                                 fontSize = 14.sp
                             )
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(
+                                modifier = Modifier.height(8.dp)
+                            )
 
-                            GrievanceStatus(status = grievance.status)
+                            GrievanceStatus(
+                                status = grievance.status
+                            )
 
                             if (grievance.createdAt != null) {
-                                Spacer(modifier = Modifier.height(6.dp))
+
+                                Spacer(
+                                    modifier = Modifier.height(6.dp)
+                                )
 
                                 Text(
-                                    text = "Submitted: ${grievance.createdAt}",
+                                    text =
+                                        "Submitted: ${grievance.createdAt}",
                                     fontSize = 12.sp
                                 )
                             }
