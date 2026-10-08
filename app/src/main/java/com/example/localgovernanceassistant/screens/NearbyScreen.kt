@@ -12,11 +12,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.localgovernanceassistant.R
 
 @Composable
 fun NearbyScreen() {
 
     val context = LocalContext.current
+
+    val location = stringResource(R.string.location)
+    val nearbyServices = stringResource(R.string.nearby_services)
+    val nearbyServicesDescription =
+        stringResource(R.string.nearby_services_description)
+    val governmentOffices = stringResource(R.string.government_offices)
+    val governmentHospitals = stringResource(R.string.government_hospitals)
+    val governmentSchools = stringResource(R.string.government_schools)
+    val policeStations = stringResource(R.string.police_stations)
+    val gramPanchayatOffices = stringResource(R.string.gram_panchayat_offices)
+
 
     fun openMaps(search: String) {
         val uri = Uri.parse(
@@ -55,19 +68,19 @@ fun NearbyScreen() {
 
         Icon(
             imageVector = Icons.Default.LocationOn,
-            contentDescription = "Location",
+            contentDescription = location,
             modifier = Modifier.size(60.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Nearby Services",
+            text = nearbyServices,
             fontSize = 26.sp
         )
 
         Text(
-            text = "Find nearby government offices and public services.",
+            text = nearbyServicesDescription,
             fontSize = 15.sp,
             modifier = Modifier.padding(
                 top = 10.dp,
@@ -81,7 +94,7 @@ fun NearbyScreen() {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Government Offices")
+            Text(governmentOffices)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -92,7 +105,7 @@ fun NearbyScreen() {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Government Hospitals")
+            Text(governmentHospitals)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -103,7 +116,7 @@ fun NearbyScreen() {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Government Schools")
+            Text(governmentSchools)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -114,7 +127,7 @@ fun NearbyScreen() {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Police Stations")
+            Text(policeStations)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -125,7 +138,7 @@ fun NearbyScreen() {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Gram Panchayat Offices")
+            Text(gramPanchayatOffices)
         }
     }
 }

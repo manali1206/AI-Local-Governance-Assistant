@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -31,6 +30,8 @@ import com.example.localgovernanceassistant.screens.ProfileScreen
 import com.example.localgovernanceassistant.screens.SchemesScreen
 import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
+import androidx.compose.ui.res.stringResource
+import com.example.localgovernanceassistant.R
 
 data class BottomNavItem(
     val route: String,
@@ -52,27 +53,27 @@ fun AppNavigation() {
     val bottomNavItems = listOf(
         BottomNavItem(
             route = "home",
-            title = "Home",
+            title = stringResource(R.string.home),
             icon = Icons.Default.Home
         ),
         BottomNavItem(
             route = "schemes",
-            title = "Schemes",
+            title = stringResource(R.string.schemes),
             icon = Icons.AutoMirrored.Filled.Assignment
         ),
         BottomNavItem(
             route = "grievance",
-            title = "Grievances",
+            title = stringResource(R.string.grievances),
             icon = Icons.Default.Report
         ),
         BottomNavItem(
             route = "nearby",
-            title = "Nearby",
+            title = stringResource(R.string.nearby),
             icon = Icons.Default.LocationOn
         ),
         BottomNavItem(
             route = "profile",
-            title = "Profile",
+            title = stringResource(R.string.profile),
             icon = Icons.Default.Person
         )
     )
@@ -95,15 +96,7 @@ fun AppNavigation() {
 
                             onClick = {
                                 navController.navigate(item.route) {
-
-                                    popUpTo(
-                                        navController.graph.findStartDestination().id
-                                    ) {
-                                        saveState = true
-                                    }
-
                                     launchSingleTop = true
-                                    restoreState = true
                                 }
                             },
 

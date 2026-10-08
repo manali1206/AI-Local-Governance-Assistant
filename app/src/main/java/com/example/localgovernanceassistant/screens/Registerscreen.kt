@@ -14,12 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.rememberCoroutineScope
+import com.example.localgovernanceassistant.R
 import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.launch
@@ -42,12 +44,36 @@ fun Registerscreen(
     }
 
     val scope = rememberCoroutineScope()
+
     var errorMessage by remember {
         mutableStateOf("")
     }
+
     var successMessage by remember {
         mutableStateOf("")
     }
+
+    // Localized strings
+    val createAccount =
+        stringResource(R.string.create_account)
+
+    val fullName =
+        stringResource(R.string.full_name)
+
+    val emailLabel =
+        stringResource(R.string.email)
+
+    val passwordLabel =
+        stringResource(R.string.password)
+
+    val registrationSuccess =
+        stringResource(R.string.registration_success)
+
+    val registrationFailed =
+        stringResource(R.string.registration_failed)
+
+    val register =
+        stringResource(R.string.register)
 
     Column(
         modifier = Modifier
@@ -57,12 +83,14 @@ fun Registerscreen(
     ) {
 
         Text(
-            text = "Create Account",
+            text = createAccount,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
 
         OutlinedTextField(
             value = name,
@@ -70,13 +98,15 @@ fun Registerscreen(
                 name = it
             },
             label = {
-                Text("Full Name")
+                Text(fullName)
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
 
         OutlinedTextField(
             value = email,
@@ -84,13 +114,15 @@ fun Registerscreen(
                 email = it
             },
             label = {
-                Text("Email")
+                Text(emailLabel)
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
 
         OutlinedTextField(
             value = password,
@@ -98,31 +130,43 @@ fun Registerscreen(
                 password = it
             },
             label = {
-                Text("Password")
+                Text(passwordLabel)
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
 
         if (errorMessage.isNotEmpty()) {
+
             Text(
                 text = errorMessage,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(
+                    bottom = 12.dp
+                )
             )
         }
+
         if (successMessage.isNotEmpty()) {
+
             Text(
                 text = successMessage,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(
+                    bottom = 12.dp
+                )
             )
         }
 
         Button(
             onClick = {
+
                 scope.launch {
+
                     try {
+
                         supabaseClient.auth.signUpWith(
                             io.github.jan.supabase.auth.providers.builtin.Email
                         ) {
@@ -130,16 +174,22 @@ fun Registerscreen(
                             this.password = password
                         }
 
-                        successMessage = "Account created successfully. Please check your email, then login."
+                        successMessage =
+                            registrationSuccess
+
                         onRegisterSuccess()
+
                     } catch (e: Exception) {
-                        errorMessage = e.message ?: "Registration failed"
+
+                        errorMessage =
+                            e.message ?: registrationFailed
                     }
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Register")
+
+            Text(register)
         }
     }
 }

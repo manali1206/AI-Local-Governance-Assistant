@@ -20,8 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.localgovernanceassistant.R
 import com.example.localgovernanceassistant.ai.model.ChatMessage
 import com.example.localgovernanceassistant.ai.repository.AIRepository
 import kotlinx.coroutines.launch
@@ -30,14 +32,33 @@ import kotlinx.coroutines.launch
 fun AssistantScreen(
     modifier: Modifier = Modifier
 ) {
-    var question by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
+
+    val aiAssistant = stringResource(R.string.ai_assistant)
+    val welcomeMessage = stringResource(R.string.ai_welcome_message)
+    val youPrefix = stringResource(R.string.you_prefix)
+    val assistantPrefix = stringResource(R.string.assistant_prefix)
+    val assistantThinking = stringResource(R.string.assistant_thinking)
+    val typeYourQuestion = stringResource(R.string.type_your_question)
+    val pleaseEnterQuestion = stringResource(R.string.please_enter_question)
+    val failedAiResponse = stringResource(R.string.failed_ai_response)
+    val send = stringResource(R.string.send)
+
+    var question by remember {
+        mutableStateOf("")
+    }
+
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    var errorMessage by remember {
+        mutableStateOf("")
+    }
 
     val messages = remember {
         mutableStateListOf(
             ChatMessage(
-                message = "Hello! I am your Local Governance Assistant.",
+                message = welcomeMessage,
                 isUser = false
             )
         )
@@ -52,8 +73,9 @@ fun AssistantScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+
         Text(
-            text = "AI Assistant",
+            text = aiAssistant,
             fontSize = 24.sp,
             modifier = Modifier.padding(20.dp)
         )
@@ -65,28 +87,33 @@ fun AssistantScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+
             items(messages) { message ->
+
                 Text(
                     text = if (message.isUser) {
-                        "You: ${message.message}"
+                        "$youPrefix: ${message.message}"
                     } else {
-                        "Assistant: ${message.message}"
+                        "$assistantPrefix: ${message.message}"
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
             if (isLoading) {
+
                 item {
+
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
+
                         CircularProgressIndicator(
                             modifier = Modifier.padding(4.dp)
                         )
 
                         Text(
-                            text = "Assistant is thinking...",
+                            text = assistantThinking,
                             modifier = Modifier.padding(
                                 start = 10.dp,
                                 top = 8.dp
@@ -98,6 +125,7 @@ fun AssistantScreen(
         }
 
         if (errorMessage.isNotEmpty()) {
+
             Text(
                 text = errorMessage,
                 fontSize = 14.sp,
@@ -113,6 +141,7 @@ fun AssistantScreen(
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
+
             OutlinedTextField(
                 value = question,
                 onValueChange = {
@@ -121,7 +150,7 @@ fun AssistantScreen(
                 },
                 modifier = Modifier.weight(1f),
                 placeholder = {
-                    Text("Type your question...")
+                    Text(typeYourQuestion)
                 },
                 singleLine = true,
                 enabled = !isLoading
@@ -129,10 +158,11 @@ fun AssistantScreen(
 
             Button(
                 onClick = {
+
                     val userQuestion = question.trim()
 
                     if (userQuestion.isEmpty()) {
-                        errorMessage = "Please enter a question."
+                        errorMessage = pleaseEnterQuestion
                         return@Button
                     }
 
@@ -149,9 +179,11 @@ fun AssistantScreen(
                     errorMessage = ""
 
                     scope.launch {
+
                         isLoading = true
 
                         try {
+
                             val response =
                                 aiRepository.sendMessage(userQuestion)
 
@@ -161,10 +193,14 @@ fun AssistantScreen(
                                     isUser = false
                                 )
                             )
+
                         } catch (e: Exception) {
+
                             errorMessage =
-                                e.message ?: "Failed to get AI response."
+                                e.message ?: failedAiResponse
+
                         } finally {
+
                             isLoading = false
                         }
                     }
@@ -172,7 +208,7 @@ fun AssistantScreen(
                 modifier = Modifier.padding(start = 8.dp),
                 enabled = !isLoading
             ) {
-                Text("Send")
+                Text(send)
             }
         }
     }

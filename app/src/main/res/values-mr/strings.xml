@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AI स्थानिक प्रशासन सहाय्यक</string>
+
+    <string name="login">लॉगिन</string>
+    <string name="logout">लॉगआउट</string>
+
+    <string name="home">मुख्यपृष्ठ</string>
+    <string name="grievances">तक्रारी</string>
+    <string name="schemes">योजना</string>
+    <string name="assistant">सहाय्यक</string>
+    <string name="nearby">जवळपास</string>
+
+    <string name="submit_grievance">तक्रार नोंदवा</string>
+    <string name="title">शीर्षक</string>
+    <string name="description">वर्णन</string>
+    <string name="status">स्थिती</string>
+
+    <string name="pending">प्रलंबित</string>
+    <string name="in_progress">प्रगतीपथावर</string>
+    <string name="resolved">निराकरण झाले</string>
+    <string name="rejected">नाकारले</string>
+
+    <string name="language">भाषा</string>
+    <string name="english">इंग्रजी</string>
+    <string name="marathi">मराठी</string>
+
+    <string name="submit_track_complaints">तक्रारी नोंदवा आणि त्यांचा मागोवा घ्या.</string>
+    <string name="submit_a_grievance">तक्रार नोंदवा</string>
+    <string name="grievance_title">तक्रारीचे शीर्षक</string>
+    <string name="describe_grievance">तुमची तक्रार वर्णन करा</string>
+
+    <string name="failed_to_load_grievances">तक्रारी लोड करता आल्या नाहीत.</string>
+    <string name="please_enter_title_description">कृपया शीर्षक आणि वर्णन भरा.</string>
+    <string name="please_login_before_grievance">तक्रार नोंदवण्यापूर्वी कृपया लॉगिन करा.</string>
+    <string name="grievance_submitted_successfully">तक्रार यशस्वीरित्या नोंदवली गेली.</string>
+    <string name="failed_to_submit_grievance">तक्रार नोंदवता आली नाही.</string>
+    <string name="submitting">नोंदवत आहे...</string>
+
+    <string name="my_grievances">माझ्या तक्रारी</string>
+    <string name="please_login_to_view_grievances">तुमच्या तक्रारी पाहण्यासाठी कृपया लॉगिन करा.</string>
+    <string name="grievances_refreshed">तक्रारी अद्ययावत केल्या आहेत.</string>
+    <string name="failed_to_refresh_grievances">तक्रारी अद्ययावत करता आल्या नाहीत.</string>
+    <string name="refreshing">अद्ययावत करत आहे...</string>
+    <string name="refresh_status">स्थिती अद्ययावत करा</string>
+    <string name="no_grievances">अद्याप कोणतीही तक्रार नोंदवलेली नाही.</string>
+
+    <string name="grievance_id">तक्रार क्रमांक: %1$s</string>
+    <string name="submitted">नोंदवले: %1$s</string>
+    <string name="welcome_back">पुन्हा स्वागत आहे</string>
+    <string name="login_to_assistant">AI स्थानिक प्रशासन सहाय्यकात लॉगिन करा</string>
+    <string name="email">ईमेल</string>
+    <string name="password">पासवर्ड</string>
+    <string name="hide_password">पासवर्ड लपवा</string>
+    <string name="show_password">पासवर्ड दाखवा</string>
+    <string name="please_enter_email_password">कृपया ईमेल आणि पासवर्ड भरा</string>
+    <string name="login_failed">लॉगिन अयशस्वी झाले</string>
+    <string name="logging_in">लॉगिन करत आहे...</string>
+    <string name="my_profile">माझे प्रोफाइल</string>
+    <string name="profile">प्रोफाइल</string>
+    <string name="name">नाव</string>
+    <string name="phone">फोन</string>
+    <string name="save_profile">प्रोफाइल जतन करा</string>
+    <string name="profile_information">प्रोफाइल माहिती</string>
+    <string name="my_services">माझ्या सेवा</string>
+    <string name="ai_governance_assistant">AI प्रशासन सहाय्यक</string>
+    <string name="edit_profile">प्रोफाइल संपादित करा</string>
+    <string name="no_email_available">ईमेल उपलब्ध नाही</string>
+    <string name="not_added">जोडलेले नाही</string>
+    <string name="location">स्थान</string>
+
+    <string name="nearby_services_description">जवळपासची सरकारी कार्यालये आणि सार्वजनिक सेवा शोधा.</string>
+    <string name="government_offices">सरकारी कार्यालये</string>
+    <string name="government_hospitals">सरकारी रुग्णालये</string>
+    <string name="government_schools">सरकारी शाळा</string>
+    <string name="police_stations">पोलीस ठाणे</string>
+    <string name="gram_panchayat_offices">ग्रामपंचायत कार्यालये</string>
+    <string name="government_schemes_title">सरकारी योजना</string>
+    <string name="explore_schemes">सरकारी योजना, फायदे आणि पात्रतेची माहिती पहा.</string>
+    <string name="search_schemes">योजना शोधा</string>
+    <string name="all">सर्व</string>
+    <string name="education">शिक्षण</string>
+    <string name="agriculture">कृषी</string>
+    <string name="housing">गृहनिर्माण</string>
+    <string name="general">सामान्य</string>
+    <string name="purpose">उद्देश</string>
+    <string name="benefits">फायदे</string>
+    <string name="eligibility">पात्रता</string>
+    <string name="how_to_apply">अर्ज कसा करावा</string>
+    <string name="ai_welcome_message">नमस्कार! मी तुमचा स्थानिक प्रशासन सहाय्यक आहे.</string>
+    <string name="you_prefix">तुम्ही</string>
+    <string name="assistant_prefix">सहाय्यक</string>
+    <string name="assistant_thinking">सहाय्यक विचार करत आहे...</string>
+    <string name="type_your_question">तुमचा प्रश्न लिहा...</string>
+    <string name="please_enter_question">कृपया प्रश्न लिहा.</string>
+    <string name="failed_ai_response">AI प्रतिसाद मिळवण्यात अयशस्वी.</string>
+    <string name="send">पाठवा</string>
+    <string name="ai_local_governance">AI स्थानिक प्रशासन</string>
+    <string name="your_local_government_assistant">तुमचा स्थानिक प्रशासन सहाय्यक</string>
+    <string name="search_government_services">सरकारी सेवा शोधा</string>
+    <string name="search">शोधा</string>
+
+    <string name="need_help">मदत हवी आहे?</string>
+    <string name="ask_ai_government_services">सरकारी सेवांबद्दल आमच्या AI सहाय्यकाला विचारा.</string>
+    <string name="ask_ai">AI ला विचारा</string>
+
+    <string name="services">सेवा</string>
+
+    <string name="ai_assistant">AI सहाय्यक</string>
+    <string name="ask_questions_government_services">सरकारी सेवांबद्दल प्रश्न विचारा</string>
+
+    <string name="government_schemes">सरकारी योजना</string>
+    <string name="find_schemes_check_eligibility">योजना शोधा आणि पात्रता तपासा</string>
+
+
+    <string name="nearby_services">जवळपासच्या सेवा</string>
+    <string name="find_nearby_government_offices">जवळपासची सरकारी कार्यालये शोधा</string>
+    <string name="create_account">खाते तयार करा</string>
+    <string name="full_name">पूर्ण नाव</string>
+    <string name="registration_success">खाते यशस्वीरित्या तयार झाले. कृपया तुमचा ईमेल तपासा आणि नंतर लॉगिन करा.</string>
+    <string name="registration_failed">नोंदणी अयशस्वी</string>
+    <string name="register">नोंदणी करा</string>
+    <string name="submit_and_track_complaints">तुमच्या तक्रारी नोंदवा आणि त्यांचा मागोवा घ्या.</string>
+
+
+
+    <string name="citizen">नागरिक</string>
+    <string name="not_available">उपलब्ध नाही</string>
+    <string name="track_grievance">तक्रारीचा मागोवा घ्या</string>
+    <string name="track_grievance_by_id">तक्रार क्रमांक वापरून तक्रारीचा मागोवा घ्या</string>
+    <string name="enter_grievance_id">तक्रार क्रमांक प्रविष्ट करा</string>
+    <string name="track_status">स्थिती तपासा</string>
+    <string name="tracking">मागोवा घेत आहे...</string>
+    <string name="grievance_not_found">तक्रार सापडली नाही</string>
+    <string name="please_enter_grievance_id">कृपया तक्रार क्रमांक प्रविष्ट करा.</string>
+    <string name="grievance_found">तक्रारीची माहिती</string>
+    <string name="current_status">सध्याची स्थिती</string>
+    <string name="failed_to_track_grievance">तक्रारीचा मागोवा घेण्यात अयशस्वी</string>
+    <string name="describe_your_grievance">तुमची तक्रार वर्णन करा</string>
+    <!-- Scheme categories -->
+    <string name="employment">रोजगार</string>
+    <string name="healthcare">आरोग्यसेवा</string>
+    <string name="sanitation">स्वच्छता</string>
+
+    <!-- PM-KISAN -->
+    <string name="scheme_pm_kisan_name">पीएम-किसान</string>
+    <string name="scheme_pm_kisan_purpose">पात्र शेतकरी कुटुंबांना आर्थिक सहाय्य प्रदान करते.</string>
+    <string name="scheme_pm_kisan_benefits">पात्र शेतकऱ्यांना या योजनेद्वारे आर्थिक सहाय्य मिळते.</string>
+    <string name="scheme_pm_kisan_eligibility">पात्रता सरकारने निश्चित केलेल्या नियम व अटींवर आधारित आहे.</string>
+    <string name="scheme_pm_kisan_application">शेतकरी नोंदणी आणि अर्जाची स्थिती जाणून घेण्यासाठी अधिकृत पीएम-किसान माध्यमे आणि स्थानिक सरकारी मदत घेऊ शकतात.</string>
+
+    <!-- Pradhan Mantri Awas Yojana -->
+    <string name="scheme_pmay_name">प्रधानमंत्री आवास योजना</string>
+    <string name="scheme_pmay_purpose">पात्र कुटुंबांना घर मिळविण्यास किंवा घरामध्ये सुधारणा करण्यास सहाय्य करते.</string>
+    <string name="scheme_pmay_benefits">लागू योजनेच्या मार्गदर्शक तत्त्वांनुसार घरकुलासाठी आर्थिक सहाय्य दिले जाते.</string>
+    <string name="scheme_pmay_eligibility">पात्रता संबंधित पीएमएवाय घटकांतर्गत कुटुंबाची परिस्थिती आणि आर्थिक निकषांवर अवलंबून असते.</string>
+    <string name="scheme_pmay_application">अर्जदार अधिकृत सरकारी संकेतस्थळे किंवा स्थानिक प्रशासनामार्फत संबंधित पीएमएवाय अर्ज प्रक्रिया तपासू शकतात.</string>
+
+    <!-- MGNREGA -->
+    <string name="scheme_mgnrega_name">मनरेगा</string>
+    <string name="scheme_mgnrega_purpose">ग्रामीण रोजगार आणि उपजीविका सुरक्षिततेसाठी कायदेशीर चौकट उपलब्ध करून देते.</string>
+    <string name="scheme_mgnrega_benefits">पात्र ग्रामीण कुटुंबांना योजनेच्या तरतुदींनुसार रोजगाराची मागणी करता येते.</string>
+    <string name="scheme_mgnrega_eligibility">अकुशल शारीरिक काम करण्यास इच्छुक असलेल्या प्रौढ सदस्यांचे ग्रामीण कुटुंब या कायद्याअंतर्गत रोजगाराची मागणी करू शकते.</string>
+    <string name="scheme_mgnrega_application">कामगार ग्रामपंचायतीमार्फत नोंदणी करून कामाची मागणी करू शकतात.</string>
+
+    <!-- Ayushman Bharat -->
+    <string name="scheme_ayushman_name">आयुष्मान भारत</string>
+    <string name="scheme_ayushman_purpose">लागू घटकांनुसार पात्र लाभार्थ्यांना आरोग्यसेवा मिळविण्यास सहाय्य करते.</string>
+    <string name="scheme_ayushman_benefits">लागू कार्यक्रमाच्या मार्गदर्शक तत्त्वांनुसार पात्र लाभार्थ्यांना आरोग्यसेवा सुविधा मिळू शकतात.</string>
+    <string name="scheme_ayushman_eligibility">पात्रता संबंधित लाभार्थी यादी आणि सरकारी निकषांवर अवलंबून असते.</string>
+    <string name="scheme_ayushman_application">पात्रता आणि उपलब्ध सेवा अधिकृत सरकारी माध्यमे तसेच सहभागी आरोग्यसेवा केंद्रांमार्फत तपासता येतात.</string>
+
+    <!-- Swachh Bharat Mission -->
+    <string name="scheme_swachh_bharat_name">स्वच्छ भारत अभियान</string>
+    <string name="scheme_swachh_bharat_purpose">स्वच्छता, आरोग्यदायी परिसर आणि सुधारित कचरा व्यवस्थापनाला प्रोत्साहन देते.</string>
+    <string name="scheme_swachh_bharat_benefits">समुदायामध्ये स्वच्छता आणि कचरा व्यवस्थापनाशी संबंधित उपक्रमांना सहाय्य करते.</string>
+    <string name="scheme_swachh_bharat_eligibility">लाभ आणि उपक्रम संबंधित कार्यक्रम आणि स्थानिक अंमलबजावणीवर अवलंबून असतात.</string>
+    <string name="scheme_swachh_bharat_application">उपलब्ध उपक्रम आणि सहाय्याबाबत माहितीसाठी नागरिक स्थानिक सरकारी संस्थेशी संपर्क साधू शकतात.</string>
+
+    <!-- Education Scholarships -->
+    <string name="scheme_education_scholarships_name">शैक्षणिक शिष्यवृत्ती</string>
+    <string name="scheme_education_scholarships_purpose">पात्र विद्यार्थ्यांना आर्थिक सहाय्य आणि शिष्यवृत्ती प्रदान करते.</string>
+    <string name="scheme_education_scholarships_benefits">विशिष्ट शिष्यवृत्तीच्या नियमांनुसार पात्र विद्यार्थ्यांना शिक्षणासाठी आर्थिक सहाय्य मिळू शकते.</string>
+    <string name="scheme_education_scholarships_eligibility">पात्रता शिष्यवृत्तीचा प्रकार, शैक्षणिक स्तर, उत्पन्न, प्रवर्ग आणि इतर अटींनुसार बदलते.</string>
+    <string name="scheme_education_scholarships_application">विद्यार्थ्यांनी संबंधित अधिकृत शिष्यवृत्ती पोर्टल तपासून आवश्यक कागदपत्रांसह अर्ज करावा.</string>
+    <string name="status_timeline">स्थितीचा मागोवा</string>
+    <string name="no_status_history">स्थितीचा मागोवा उपलब्ध नाही.</string>
+    <string name="grievance_in_progress">कार्यवाही सुरू</string>
+
+
+
+
+
+
+
+</resources>

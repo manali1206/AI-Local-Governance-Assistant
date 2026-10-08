@@ -32,6 +32,8 @@ import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import kotlinx.coroutines.launch
+import androidx.compose.ui.res.stringResource
+import com.example.localgovernanceassistant.R
 
 @Composable
 fun LoginScreen(
@@ -45,6 +47,16 @@ fun LoginScreen(
     var isLoading by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
+    val welcomeBack = stringResource(R.string.welcome_back)
+    val loginToAssistant = stringResource(R.string.login_to_assistant)
+    val emailLabel = stringResource(R.string.email)
+    val passwordLabel = stringResource(R.string.password)
+    val hidePassword = stringResource(R.string.hide_password)
+    val showPassword = stringResource(R.string.show_password)
+    val pleaseEnterEmailPassword = stringResource(R.string.please_enter_email_password)
+    val loginFailed = stringResource(R.string.login_failed)
+    val loggingIn = stringResource(R.string.logging_in)
+    val createAccount = stringResource(R.string.create_account)
 
     Column(
         modifier = Modifier
@@ -54,7 +66,7 @@ fun LoginScreen(
     ) {
 
         Text(
-            text = "Welcome Back",
+            text = welcomeBack,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -62,7 +74,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Login to AI Local Governance Assistant"
+             text = loginToAssistant
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -73,7 +85,7 @@ fun LoginScreen(
                 emailText = it
                 errorMessage = ""
             },
-            label = { Text("Email") },
+            label = { Text(emailLabel) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -86,7 +98,7 @@ fun LoginScreen(
                 passwordText = it
                 errorMessage = ""
             },
-            label = { Text("Password") },
+            label = { Text(passwordLabel) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             visualTransformation = if (passwordVisible) {
@@ -128,7 +140,7 @@ fun LoginScreen(
         Button(
             onClick = {
                 if (emailText.isBlank() || passwordText.isBlank()) {
-                    errorMessage = "Please enter email and password"
+                    errorMessage = pleaseEnterEmailPassword
                     return@Button
                 }
 
@@ -146,7 +158,7 @@ fun LoginScreen(
 
                     } catch (e: Exception) {
                         isLoading = false
-                        errorMessage = e.message ?: "Login failed"
+                        errorMessage = e.message ?: loginFailed
                     }
                 }
             },
@@ -154,7 +166,7 @@ fun LoginScreen(
             enabled = !isLoading
         ) {
             Text(
-                text = if (isLoading) "Logging in..." else "Login"
+                text = if (isLoading) loggingIn else stringResource(R.string.login)
             )
         }
 
@@ -164,7 +176,7 @@ fun LoginScreen(
             onClick = onRegisterClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Create Account")
+            Text(createAccount)
         }
     }
 }

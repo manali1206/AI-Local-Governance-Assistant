@@ -19,12 +19,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.localgovernanceassistant.R
 
 data class GovernmentScheme(
     val name: String,
+    val categoryKey: String,
     val category: String,
     val purpose: String,
     val benefits: String,
@@ -35,61 +38,140 @@ data class GovernmentScheme(
 @Composable
 fun SchemesScreen() {
 
+    // --------------------------------------------------
+    // LOCALIZED UI TEXT
+    // --------------------------------------------------
+
+    val governmentSchemesTitle =
+        stringResource(R.string.government_schemes_title)
+
+    val exploreSchemes =
+        stringResource(R.string.explore_schemes)
+
+    val searchSchemes =
+        stringResource(R.string.search_schemes)
+
+    val purpose =
+        stringResource(R.string.purpose)
+
+    val benefits =
+        stringResource(R.string.benefits)
+
+    val eligibility =
+        stringResource(R.string.eligibility)
+
+    val howToApply =
+        stringResource(R.string.how_to_apply)
+
+    // --------------------------------------------------
+    // LOCALIZED CATEGORY NAMES
+    // --------------------------------------------------
+
+    val allCategory =
+        stringResource(R.string.all)
+
+    val educationCategory =
+        stringResource(R.string.education)
+
+    val agricultureCategory =
+        stringResource(R.string.agriculture)
+
+    val housingCategory =
+        stringResource(R.string.housing)
+
+    val employmentCategory =
+        stringResource(R.string.employment)
+
+    val healthcareCategory =
+        stringResource(R.string.healthcare)
+
+    val sanitationCategory =
+        stringResource(R.string.sanitation)
+
+    // --------------------------------------------------
+    // GOVERNMENT SCHEMES
+    // --------------------------------------------------
+
     val schemes = listOf(
 
         GovernmentScheme(
-            name = "PM-KISAN",
-            category = "Agriculture",
-            purpose = "Provides financial support to eligible farmer families.",
-            benefits = "Eligible farmers receive financial assistance through the scheme.",
-            eligibility = "Eligibility is based on the rules and conditions specified by the Government.",
-            application = "Farmers can use the official PM-KISAN channels and local government assistance for registration and status information."
+            name = stringResource(R.string.scheme_pm_kisan_name),
+            categoryKey = "Agriculture",
+            category = agricultureCategory,
+            purpose = stringResource(R.string.scheme_pm_kisan_purpose),
+            benefits = stringResource(R.string.scheme_pm_kisan_benefits),
+            eligibility = stringResource(R.string.scheme_pm_kisan_eligibility),
+            application = stringResource(R.string.scheme_pm_kisan_application)
         ),
 
         GovernmentScheme(
-            name = "Pradhan Mantri Awas Yojana",
-            category = "Housing",
-            purpose = "Supports eligible households in obtaining or improving housing.",
-            benefits = "Housing assistance is provided according to the applicable scheme guidelines.",
-            eligibility = "Eligibility depends on household and economic criteria specified under the relevant PMAY component.",
-            application = "Applicants can check the applicable PMAY process through official government portals or local authorities."
+            name = stringResource(R.string.scheme_pmay_name),
+            categoryKey = "Housing",
+            category = housingCategory,
+            purpose = stringResource(R.string.scheme_pmay_purpose),
+            benefits = stringResource(R.string.scheme_pmay_benefits),
+            eligibility = stringResource(R.string.scheme_pmay_eligibility),
+            application = stringResource(R.string.scheme_pmay_application)
         ),
 
         GovernmentScheme(
-            name = "MGNREGA",
-            category = "Employment",
-            purpose = "Provides a legal framework for rural employment and livelihood security.",
-            benefits = "Eligible rural households can seek employment according to the scheme's provisions.",
-            eligibility = "Rural households whose adult members are willing to perform unskilled manual work may seek employment under the Act.",
-            application = "Workers can register and request work through the local Gram Panchayat."
+            name = stringResource(R.string.scheme_mgnrega_name),
+            categoryKey = "Employment",
+            category = employmentCategory,
+            purpose = stringResource(R.string.scheme_mgnrega_purpose),
+            benefits = stringResource(R.string.scheme_mgnrega_benefits),
+            eligibility = stringResource(R.string.scheme_mgnrega_eligibility),
+            application = stringResource(R.string.scheme_mgnrega_application)
         ),
 
         GovernmentScheme(
-            name = "Ayushman Bharat",
-            category = "Healthcare",
-            purpose = "Supports access to healthcare for eligible beneficiaries under its applicable components.",
-            benefits = "Eligible beneficiaries can receive healthcare benefits according to the applicable program guidelines.",
-            eligibility = "Eligibility depends on the applicable beneficiary database and government criteria.",
-            application = "Eligibility and available services can be checked through official government channels and participating healthcare facilities."
+            name = stringResource(R.string.scheme_ayushman_name),
+            categoryKey = "Healthcare",
+            category = healthcareCategory,
+            purpose = stringResource(R.string.scheme_ayushman_purpose),
+            benefits = stringResource(R.string.scheme_ayushman_benefits),
+            eligibility = stringResource(R.string.scheme_ayushman_eligibility),
+            application = stringResource(R.string.scheme_ayushman_application)
         ),
 
         GovernmentScheme(
-            name = "Swachh Bharat Mission",
-            category = "Sanitation",
-            purpose = "Promotes sanitation, cleanliness, and improved waste management.",
-            benefits = "Supports sanitation and cleanliness activities in communities.",
-            eligibility = "Benefits and activities depend on the applicable program and local implementation.",
-            application = "Citizens can contact their local government body for information about available activities and support."
+            name = stringResource(R.string.scheme_swachh_bharat_name),
+            categoryKey = "Sanitation",
+            category = sanitationCategory,
+            purpose = stringResource(R.string.scheme_swachh_bharat_purpose),
+            benefits = stringResource(R.string.scheme_swachh_bharat_benefits),
+            eligibility = stringResource(R.string.scheme_swachh_bharat_eligibility),
+            application = stringResource(R.string.scheme_swachh_bharat_application)
         ),
 
         GovernmentScheme(
-            name = "Education Scholarships",
-            category = "Education",
-            purpose = "Provides financial assistance and scholarships to eligible students.",
-            benefits = "Eligible students may receive financial support for education according to specific scholarship rules.",
-            eligibility = "Eligibility varies by scholarship, educational level, income, category, and other conditions.",
-            application = "Students should check the applicable official scholarship portal and submit the required documents."
+            name = stringResource(R.string.scheme_education_scholarships_name),
+            categoryKey = "Education",
+            category = educationCategory,
+            purpose = stringResource(R.string.scheme_education_scholarships_purpose),
+            benefits = stringResource(R.string.scheme_education_scholarships_benefits),
+            eligibility = stringResource(R.string.scheme_education_scholarships_eligibility),
+            application = stringResource(R.string.scheme_education_scholarships_application)
         )
+    )
+
+    // --------------------------------------------------
+    // CATEGORY FILTERS
+    // --------------------------------------------------
+
+    data class CategoryOption(
+        val key: String,
+        val label: String
+    )
+
+    val categories = listOf(
+        CategoryOption("All", allCategory),
+        CategoryOption("Education", educationCategory),
+        CategoryOption("Agriculture", agricultureCategory),
+        CategoryOption("Housing", housingCategory),
+        CategoryOption("Employment", employmentCategory),
+        CategoryOption("Healthcare", healthcareCategory),
+        CategoryOption("Sanitation", sanitationCategory)
     )
 
     var searchText by remember {
@@ -100,26 +182,40 @@ fun SchemesScreen() {
         mutableStateOf("All")
     }
 
-    val categories = listOf(
-        "All",
-        "Education",
-        "Agriculture",
-        "Housing",
-        "General"
-    )
+    // --------------------------------------------------
+    // FILTER SCHEMES
+    // --------------------------------------------------
 
     val filteredSchemes = schemes.filter { scheme ->
 
         val matchesSearch =
-            scheme.name.contains(searchText, ignoreCase = true) ||
-                    scheme.purpose.contains(searchText, ignoreCase = true)
+            scheme.name.contains(
+                searchText,
+                ignoreCase = true
+            ) ||
+                    scheme.purpose.contains(
+                        searchText,
+                        ignoreCase = true
+                    ) ||
+                    scheme.benefits.contains(
+                        searchText,
+                        ignoreCase = true
+                    ) ||
+                    scheme.eligibility.contains(
+                        searchText,
+                        ignoreCase = true
+                    )
 
         val matchesCategory =
             selectedCategory == "All" ||
-                    scheme.category == selectedCategory
+                    scheme.categoryKey == selectedCategory
 
         matchesSearch && matchesCategory
     }
+
+    // --------------------------------------------------
+    // SCREEN
+    // --------------------------------------------------
 
     Column(
         modifier = Modifier
@@ -128,13 +224,13 @@ fun SchemesScreen() {
     ) {
 
         Text(
-            text = "Government Schemes",
+            text = governmentSchemesTitle,
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = "Explore government schemes, benefits and eligibility information.",
+            text = exploreSchemes,
             fontSize = 15.sp,
             modifier = Modifier.padding(
                 top = 6.dp,
@@ -149,7 +245,7 @@ fun SchemesScreen() {
             },
             modifier = Modifier.fillMaxWidth(),
             label = {
-                Text("Search schemes")
+                Text(searchSchemes)
             },
             singleLine = true
         )
@@ -164,12 +260,12 @@ fun SchemesScreen() {
             categories.forEach { category ->
 
                 FilterChip(
-                    selected = selectedCategory == category,
+                    selected = selectedCategory == category.key,
                     onClick = {
-                        selectedCategory = category
+                        selectedCategory = category.key
                     },
                     label = {
-                        Text(category)
+                        Text(category.label)
                     }
                 )
             }
@@ -204,7 +300,7 @@ fun SchemesScreen() {
                         )
 
                         Text(
-                            text = "Purpose",
+                            text = purpose,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(top = 12.dp)
@@ -216,7 +312,7 @@ fun SchemesScreen() {
                         )
 
                         Text(
-                            text = "Benefits",
+                            text = benefits,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(top = 10.dp)
@@ -228,7 +324,7 @@ fun SchemesScreen() {
                         )
 
                         Text(
-                            text = "Eligibility",
+                            text = eligibility,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(top = 10.dp)
@@ -240,7 +336,7 @@ fun SchemesScreen() {
                         )
 
                         Text(
-                            text = "How to Apply",
+                            text = howToApply,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(top = 10.dp)

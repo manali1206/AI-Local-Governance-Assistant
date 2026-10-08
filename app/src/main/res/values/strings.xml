@@ -1,3 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">AILocalGovernanceAssistant</string>
+
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_to_assistant">Login to AI Local Governance Assistant</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="please_enter_email_password">Please enter email and password</string>
+    <string name="login_failed">Login failed</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="create_account">Create Account</string>
+    <string name="login">Login</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="profile_information">Profile Information</string>
+    <string name="my_services">My Services</string>
+    <string name="my_grievances">My Grievances</string>
+    <string name="ai_governance_assistant">AI Governance Assistant</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="no_email_available">No email available</string>
+    <string name="not_added">Not added</string>
+    <string name="logout">Logout</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="marathi">Marathi</string>
+    <string name="location">Location</string>
+    <string name="nearby_services_description">Find nearby government offices and public services.</string>
+    <string name="government_offices">Government Offices</string>
+    <string name="government_hospitals">Government Hospitals</string>
+    <string name="government_schools">Government Schools</string>
+    <string name="police_stations">Police Stations</string>
+    <string name="gram_panchayat_offices">Gram Panchayat Offices</string>
+    <string name="government_schemes_title">Government Schemes</string>
+    <string name="explore_schemes">Explore government schemes, benefits and eligibility information.</string>
+    <string name="search_schemes">Search schemes</string>
+    <string name="all">All</string>
+    <string name="education">Education</string>
+    <string name="agriculture">Agriculture</string>
+    <string name="housing">Housing</string>
+    <string name="general">General</string>
+    <string name="purpose">Purpose</string>
+    <string name="benefits">Benefits</string>
+    <string name="eligibility">Eligibility</string>
+    <string name="how_to_apply">How to Apply</string>
+    <string name="ai_welcome_message">Hello! I am your Local Governance Assistant.</string>
+    <string name="you_prefix">You</string>
+    <string name="assistant_prefix">Assistant</string>
+    <string name="assistant_thinking">Assistant is thinking...</string>
+    <string name="type_your_question">Type your question...</string>
+    <string name="please_enter_question">Please enter a question.</string>
+    <string name="failed_ai_response">Failed to get AI response.</string>
+    <string name="send">Send</string>
+    <string name="ai_local_governance">AI Local Governance</string>
+    <string name="your_local_government_assistant">Your local government assistant</string>
+    <string name="search_government_services">Search government services</string>
+    <string name="search">Search</string>
+
+    <string name="need_help">Need help?</string>
+    <string name="ask_ai_government_services">Ask our AI assistant about government services.</string>
+    <string name="ask_ai">Ask AI</string>
+
+    <string name="services">Services</string>
+
+    <string name="ai_assistant">AI Assistant</string>
+    <string name="ask_questions_government_services">Ask questions about government services</string>
+
+    <string name="government_schemes">Government Schemes</string>
+    <string name="find_schemes_check_eligibility">Find schemes and check eligibility</string>
+
+    <string name="grievances">Grievances</string>
+    <string name="submit_track_complaints">Submit and track complaints</string>
+
+    <string name="nearby_services">Nearby Services</string>
+    <string name="find_nearby_government_offices">Find nearby government offices</string>
+
+    <string name="home">Home</string>
+    <string name="schemes">Schemes</string>
+    <string name="nearby">Nearby</string>
+
+    <string name="full_name">Full Name</string>
+    <string name="registration_success">Account created successfully. Please check your email, then login.</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="register">Register</string>
+    <string name="submit_and_track_complaints">Submit and track your complaints.</string>
+    <string name="submit_a_grievance">Submit a Grievance</string>
+    <string name="grievance_title">Grievance title</string>
+    <string name="describe_your_grievance">Describe your grievance</string>
+    <string name="submit_grievance">Submit Grievance</string>
+    <string name="grievance_submitted_successfully">Grievance submitted successfully.</string>
+    <string name="grievance_id">Grievance ID</string>
+    <string name="submitted">Submitted</string>
+    <string name="no_grievances_submitted">No grievances submitted yet.</string>
+    <string name="refresh_status">Refresh Status</string>
+    <string name="refreshing">Refreshing...</string>
+    <string name="grievances_refreshed">Grievances refreshed.</string>
+    <string name="please_enter_title_description">Please enter title and description.</string>
+    <string name="please_login_before_grievance">Please login before submitting a grievance.</string>
+    <string name="please_login_to_view_grievances">Please login to view your grievances.</string>
+    <string name="failed_to_load_grievances">Failed to load grievances.</string>
+    <string name="failed_to_submit_grievance">Failed to submit grievance.</string>
+    <string name="failed_to_refresh_grievances">Failed to refresh grievances.</string>
+    <string name="submitting">Submitting...</string>
+    <string name="pending">Pending</string>
+    <string name="grievance_in_progress">In Progress</string>
+    <string name="resolved">Resolved</string>
+    <string name="rejected">Rejected</string>
+    <string name="citizen">Citizen</string>
+    <string name="not_available">N/A</string>
+    <string name="track_grievance">Track Grievance</string>
+    <string name="track_grievance_by_id">Track your grievance using Grievance ID</string>
+    <string name="enter_grievance_id">Enter Grievance ID</string>
+    <string name="track_status">Track Status</string>
+    <string name="tracking">Tracking...</string>
+    <string name="grievance_not_found">Grievance not found</string>
+    <string name="please_enter_grievance_id">Please enter a grievance ID.</string>
+    <string name="grievance_found">Grievance Details</string>
+    <string name="current_status">Current Status</string>
+    <string name="failed_to_track_grievance">Failed to track grievance</string>
+    <!-- Scheme categories -->
+    <string name="employment">Employment</string>
+    <string name="healthcare">Healthcare</string>
+    <string name="sanitation">Sanitation</string>
+
+    <!-- PM-KISAN -->
+    <string name="scheme_pm_kisan_name">PM-KISAN</string>
+    <string name="scheme_pm_kisan_purpose">Provides financial support to eligible farmer families.</string>
+    <string name="scheme_pm_kisan_benefits">Eligible farmers receive financial assistance through the scheme.</string>
+    <string name="scheme_pm_kisan_eligibility">Eligibility is based on the rules and conditions specified by the Government.</string>
+    <string name="scheme_pm_kisan_application">Farmers can use the official PM-KISAN channels and local government assistance for registration and status information.</string>
+
+    <!-- Pradhan Mantri Awas Yojana -->
+    <string name="scheme_pmay_name">Pradhan Mantri Awas Yojana</string>
+    <string name="scheme_pmay_purpose">Supports eligible households in obtaining or improving housing.</string>
+    <string name="scheme_pmay_benefits">Housing assistance is provided according to the applicable scheme guidelines.</string>
+    <string name="scheme_pmay_eligibility">Eligibility depends on household and economic criteria specified under the relevant PMAY component.</string>
+    <string name="scheme_pmay_application">Applicants can check the applicable PMAY process through official government portals or local authorities.</string>
+
+    <!-- MGNREGA -->
+    <string name="scheme_mgnrega_name">MGNREGA</string>
+    <string name="scheme_mgnrega_purpose">Provides a legal framework for rural employment and livelihood security.</string>
+    <string name="scheme_mgnrega_benefits">Eligible rural households can seek employment according to the provisions of the scheme.</string>
+    <string name="scheme_mgnrega_eligibility">Rural households whose adult members are willing to perform unskilled manual work may seek employment under the Act.</string>
+    <string name="scheme_mgnrega_application">Workers can register and request work through the local Gram Panchayat.</string>
+
+    <!-- Ayushman Bharat -->
+    <string name="scheme_ayushman_name">Ayushman Bharat</string>
+    <string name="scheme_ayushman_purpose">Supports access to healthcare for eligible beneficiaries under its applicable components.</string>
+    <string name="scheme_ayushman_benefits">Eligible beneficiaries can receive healthcare benefits according to the applicable program guidelines.</string>
+    <string name="scheme_ayushman_eligibility">Eligibility depends on the applicable beneficiary database and government criteria.</string>
+    <string name="scheme_ayushman_application">Eligibility and available services can be checked through official government channels and participating healthcare facilities.</string>
+
+    <!-- Swachh Bharat Mission -->
+    <string name="scheme_swachh_bharat_name">Swachh Bharat Mission</string>
+    <string name="scheme_swachh_bharat_purpose">Promotes sanitation, cleanliness, and improved waste management.</string>
+    <string name="scheme_swachh_bharat_benefits">Supports sanitation and cleanliness activities in communities.</string>
+    <string name="scheme_swachh_bharat_eligibility">Benefits and activities depend on the applicable program and local implementation.</string>
+    <string name="scheme_swachh_bharat_application">Citizens can contact their local government body for information about available activities and support.</string>
+
+    <!-- Education Scholarships -->
+    <string name="scheme_education_scholarships_name">Education Scholarships</string>
+    <string name="scheme_education_scholarships_purpose">Provides financial assistance and scholarships to eligible students.</string>
+    <string name="scheme_education_scholarships_benefits">Eligible students may receive financial support for education according to specific scholarship rules.</string>
+    <string name="scheme_education_scholarships_eligibility">Eligibility varies by scholarship, educational level, income, category, and other conditions.</string>
+    <string name="scheme_education_scholarships_application">Students should check the applicable official scholarship portal and submit the required documents.</string>
+    <string name="status_timeline">Status Timeline</string>
+    <string name="no_status_history">No status history available.</string>
+    <string name="assistant">Assistant</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="status">Status</string>
+    <string name="describe_grievance">Describe your grievance</string>
+    <string name="no_grievances">No grievances</string>
+
+
+
 </resources>
