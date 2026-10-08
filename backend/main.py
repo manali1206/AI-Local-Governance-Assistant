@@ -245,9 +245,13 @@ def admin_grievances(
         response = (
             supabase
             .from_("Grievances")
+<<<<<<< HEAD
             .select(
                 "id,reference_id,title,status,created_at"
             )
+=======
+            .select("id, reference_id, title, status, created_at")
+>>>>>>> 3bbcbbf (fix: complete admin grievance management)
             .execute()
         )
 
