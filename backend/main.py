@@ -1,11 +1,17 @@
 import os
 
 from dotenv import load_dotenv
+
 from fastapi import FastAPI, HTTPException, Depends
+
 from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
 from pydantic import BaseModel
+
 from supabase import create_client, Client
+
 from datetime import datetime, timezone
 
 
@@ -14,12 +20,14 @@ from datetime import datetime, timezone
 # =============================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 ENV_FILE = os.path.join(BASE_DIR, ".env")
 
 load_dotenv(ENV_FILE)
 
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
+
 SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")
 
 ADMIN_EMAILS = [
@@ -70,35 +78,28 @@ def verify_admin(
     token = credentials.credentials
 
     try:
-
         user_response = supabase.auth.get_user(token)
 
         user = user_response.user
 
         if not user or not user.email:
-
             raise HTTPException(
                 status_code=401,
                 detail="Invalid authentication token"
             )
 
-
         if user.email.lower() not in ADMIN_EMAILS:
-
             raise HTTPException(
                 status_code=403,
                 detail="Admin access required"
             )
 
-
         return user
-
 
     except HTTPException:
         raise
 
     except Exception as error:
-
         print(
             "AUTHENTICATION ERROR:",
             repr(error)
@@ -245,13 +246,7 @@ def admin_grievances(
         response = (
             supabase
             .from_("Grievances")
-<<<<<<< HEAD
-            .select(
-                "id,reference_id,title,status,created_at"
-            )
-=======
             .select("id, reference_id, title, status, created_at")
->>>>>>> 3bbcbbf (fix: complete admin grievance management)
             .execute()
         )
 
@@ -373,14 +368,12 @@ def update_grievance_status(
         "Rejected"
     ]
 
-
     if request.status not in allowed_statuses:
 
         raise HTTPException(
             status_code=400,
             detail="Invalid status"
         )
-
 
     try:
 
@@ -399,14 +392,12 @@ def update_grievance_status(
 
         current_data = current_response.data
 
-
         if not current_data:
 
             raise HTTPException(
                 status_code=404,
                 detail="Grievance not found"
             )
-
 
         old_status = current_data.get("status")
 
@@ -425,12 +416,10 @@ def update_grievance_status(
             .execute()
         )
 
-
         print(
             "STATUS UPDATE RESULT:",
             update_response.data
         )
-
 
         if not update_response.data:
 
@@ -460,7 +449,6 @@ def update_grievance_status(
             .execute()
         )
 
-
         print(
             "HISTORY INSERT RESULT:",
             history_response.data
@@ -480,12 +468,10 @@ def update_grievance_status(
             .execute()
         )
 
-
         print(
             "UPDATED GRIEVANCE:",
             updated_response.data
         )
-
 
         return {
             "message":
@@ -501,7 +487,6 @@ def update_grievance_status(
 
     except HTTPException:
         raise
-
 
     except Exception as error:
 
