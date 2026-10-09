@@ -1,79 +1,44 @@
 package com.example.localgovernanceassistant.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.localgovernanceassistant.R
 import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 @Composable
-fun Registerscreen(
-    onRegisterSuccess: () -> Unit
-) {
+fun Registerscreen(onRegisterSuccess: () -> Unit) {
 
-    var name by remember {
-        mutableStateOf("")
-    }
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-    var email by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
 
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
-
-    var successMessage by remember {
-        mutableStateOf("")
-    }
-
-    // Localized strings
-    val createAccount =
-        stringResource(R.string.create_account)
-
-    val fullName =
-        stringResource(R.string.full_name)
-
-    val emailLabel =
-        stringResource(R.string.email)
-
-    val passwordLabel =
-        stringResource(R.string.password)
-
-    val registrationSuccess =
-        stringResource(R.string.registration_success)
-
+    val createAccount = stringResource(R.string.create_account)
+    val fullName = stringResource(R.string.full_name)
+    val emailLabel = stringResource(R.string.email)
+    val passwordLabel = stringResource(R.string.password)
+    val registerLabel = stringResource(R.string.register)
     val registrationFailed =
         stringResource(R.string.registration_failed)
-
-    val register =
-        stringResource(R.string.register)
 
     Column(
         modifier = Modifier
@@ -88,108 +53,136 @@ fun Registerscreen(
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
             value = name,
             onValueChange = {
                 name = it
+                errorMessage = ""
             },
-            label = {
-                Text(fullName)
-            },
+            label = { Text(fullName) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
+        Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextField(
             value = email,
             onValueChange = {
                 email = it
+                errorMessage = ""
             },
-            label = {
-                Text(emailLabel)
-            },
+            label = { Text(emailLabel) },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            )
         )
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
+        Spacer(modifier = Modifier.height(12.dp))
+
+        OutlinedTextField(
+            value = phone,
+            onValueChange = { input ->
+                phone = input.filter { it.isDigit() }.take(10)
+                errorMessage = ""
+            },
+            label = { Text("Phone number") },
+            prefix = { Text("+91 ") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone
+            )
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextField(
             value = password,
             onValueChange = {
                 password = it
+                errorMessage = ""
             },
-            label = {
-                Text(passwordLabel)
-            },
+            label = { Text(passwordLabel) },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            visualTransformation =
+                PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password
+            )
         )
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (errorMessage.isNotEmpty()) {
-
             Text(
                 text = errorMessage,
-                modifier = Modifier.padding(
-                    bottom = 12.dp
-                )
-            )
-        }
-
-        if (successMessage.isNotEmpty()) {
-
-            Text(
-                text = successMessage,
-                modifier = Modifier.padding(
-                    bottom = 12.dp
-                )
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(bottom = 12.dp)
             )
         }
 
         Button(
             onClick = {
+                errorMessage = ""
 
-                scope.launch {
-
-                    try {
-
-                        supabaseClient.auth.signUpWith(
-                            io.github.jan.supabase.auth.providers.builtin.Email
-                        ) {
-                            this.email = email
-                            this.password = password
-                        }
-
-                        successMessage =
-                            registrationSuccess
-
-                        onRegisterSuccess()
-
-                    } catch (e: Exception) {
-
+                when {
+                    name.isBlank() ||
+                            email.isBlank() ||
+                            phone.isBlank() ||
+                            password.isBlank() -> {
                         errorMessage =
-                            e.message ?: registrationFailed
+                            "Please fill in all fields."
+                    }
+
+                    phone.length != 10 -> {
+                        errorMessage =
+                            "Enter a valid 10-digit phone number."
+                    }
+
+                    else -> {
+                        scope.launch {
+                            isLoading = true
+
+                            try {
+                                supabaseClient.auth.signUpWith(Email) {
+                                    this.email = email.trim()
+                                    this.password = password
+
+                                    data = buildJsonObject {
+                                        put("name", name.trim())
+                                        put("phone_number", phone)
+                                    }
+                                }
+
+                                onRegisterSuccess()
+
+                            } catch (e: Exception) {
+                                errorMessage =
+                                    e.message ?: registrationFailed
+
+                            } finally {
+                                isLoading = false
+                            }
+                        }
                     }
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading
         ) {
-
-            Text(register)
+            Text(
+                text = if (isLoading) {
+                    "Registering..."
+                } else {
+                    registerLabel
+                }
+            )
         }
     }
 }

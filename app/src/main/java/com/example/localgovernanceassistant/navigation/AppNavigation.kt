@@ -1,7 +1,7 @@
+
 package com.example.localgovernanceassistant.navigation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.filled.Home
@@ -15,23 +15,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.localgovernanceassistant.screens.LoginScreen
-import com.example.localgovernanceassistant.screens.Registerscreen
+import com.example.localgovernanceassistant.R
 import com.example.localgovernanceassistant.screens.AssistantScreen
 import com.example.localgovernanceassistant.screens.GrievanceScreen
 import com.example.localgovernanceassistant.screens.HomeScreen
+import com.example.localgovernanceassistant.screens.LoginScreen
 import com.example.localgovernanceassistant.screens.NearbyScreen
 import com.example.localgovernanceassistant.screens.ProfileScreen
+import com.example.localgovernanceassistant.screens.Registerscreen
 import com.example.localgovernanceassistant.screens.SchemesScreen
 import com.example.localgovernanceassistant.supabaseClient
 import io.github.jan.supabase.auth.auth
-import androidx.compose.ui.res.stringResource
-import com.example.localgovernanceassistant.R
 
 data class BottomNavItem(
     val route: String,
@@ -41,8 +42,8 @@ data class BottomNavItem(
 
 @Composable
 fun AppNavigation() {
-
     val navController = rememberNavController()
+
     val startDestination =
         if (supabaseClient.auth.currentSessionOrNull() != null) {
             "home"
@@ -79,34 +80,26 @@ fun AppNavigation() {
     )
 
     Scaffold(
-
         bottomBar = {
-
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
 
             if (currentRoute != "login" && currentRoute != "register") {
-
                 NavigationBar {
-
                     bottomNavItems.forEach { item ->
-
                         NavigationBarItem(
                             selected = currentRoute == item.route,
-
                             onClick = {
                                 navController.navigate(item.route) {
                                     launchSingleTop = true
                                 }
                             },
-
                             icon = {
                                 Icon(
                                     imageVector = item.icon,
                                     contentDescription = item.title
                                 )
                             },
-
                             label = {
                                 Text(item.title)
                             }
@@ -115,9 +108,7 @@ fun AppNavigation() {
                 }
             }
         }
-
-    ) {innerPadding ->
-
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = startDestination,
@@ -149,8 +140,8 @@ fun AppNavigation() {
                     }
                 )
             }
-            composable("home") {
 
+            composable("home") {
                 HomeScreen(
                     onAssistantClick = {
                         navController.navigate("assistant")

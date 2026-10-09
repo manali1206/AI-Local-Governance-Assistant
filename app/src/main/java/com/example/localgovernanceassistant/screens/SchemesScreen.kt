@@ -13,12 +13,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,15 +34,16 @@ data class GovernmentScheme(
     val purpose: String,
     val benefits: String,
     val eligibility: String,
-    val application: String
+    val application: String,
+    val officialUrl: String
 )
 
 @Composable
 fun SchemesScreen() {
 
-    // --------------------------------------------------
+    val uriHandler = LocalUriHandler.current
+
     // LOCALIZED UI TEXT
-    // --------------------------------------------------
 
     val governmentSchemesTitle =
         stringResource(R.string.government_schemes_title)
@@ -63,9 +66,10 @@ fun SchemesScreen() {
     val howToApply =
         stringResource(R.string.how_to_apply)
 
-    // --------------------------------------------------
+    val visitOfficialWebsite =
+        stringResource(R.string.visit_official_website)
+
     // LOCALIZED CATEGORY NAMES
-    // --------------------------------------------------
 
     val allCategory =
         stringResource(R.string.all)
@@ -88,9 +92,7 @@ fun SchemesScreen() {
     val sanitationCategory =
         stringResource(R.string.sanitation)
 
-    // --------------------------------------------------
     // GOVERNMENT SCHEMES
-    // --------------------------------------------------
 
     val schemes = listOf(
 
@@ -101,7 +103,8 @@ fun SchemesScreen() {
             purpose = stringResource(R.string.scheme_pm_kisan_purpose),
             benefits = stringResource(R.string.scheme_pm_kisan_benefits),
             eligibility = stringResource(R.string.scheme_pm_kisan_eligibility),
-            application = stringResource(R.string.scheme_pm_kisan_application)
+            application = stringResource(R.string.scheme_pm_kisan_application),
+            officialUrl = "https://pmkisan.gov.in/"
         ),
 
         GovernmentScheme(
@@ -111,7 +114,8 @@ fun SchemesScreen() {
             purpose = stringResource(R.string.scheme_pmay_purpose),
             benefits = stringResource(R.string.scheme_pmay_benefits),
             eligibility = stringResource(R.string.scheme_pmay_eligibility),
-            application = stringResource(R.string.scheme_pmay_application)
+            application = stringResource(R.string.scheme_pmay_application),
+            officialUrl = "https://pmay-urban.gov.in/"
         ),
 
         GovernmentScheme(
@@ -121,7 +125,8 @@ fun SchemesScreen() {
             purpose = stringResource(R.string.scheme_mgnrega_purpose),
             benefits = stringResource(R.string.scheme_mgnrega_benefits),
             eligibility = stringResource(R.string.scheme_mgnrega_eligibility),
-            application = stringResource(R.string.scheme_mgnrega_application)
+            application = stringResource(R.string.scheme_mgnrega_application),
+            officialUrl = "https://nrega.dord.gov.in/"
         ),
 
         GovernmentScheme(
@@ -131,7 +136,8 @@ fun SchemesScreen() {
             purpose = stringResource(R.string.scheme_ayushman_purpose),
             benefits = stringResource(R.string.scheme_ayushman_benefits),
             eligibility = stringResource(R.string.scheme_ayushman_eligibility),
-            application = stringResource(R.string.scheme_ayushman_application)
+            application = stringResource(R.string.scheme_ayushman_application),
+            officialUrl = "https://pmjay.gov.in/"
         ),
 
         GovernmentScheme(
@@ -141,7 +147,8 @@ fun SchemesScreen() {
             purpose = stringResource(R.string.scheme_swachh_bharat_purpose),
             benefits = stringResource(R.string.scheme_swachh_bharat_benefits),
             eligibility = stringResource(R.string.scheme_swachh_bharat_eligibility),
-            application = stringResource(R.string.scheme_swachh_bharat_application)
+            application = stringResource(R.string.scheme_swachh_bharat_application),
+            officialUrl = "https://swachhbharatmission.ddws.gov.in/"
         ),
 
         GovernmentScheme(
@@ -151,13 +158,12 @@ fun SchemesScreen() {
             purpose = stringResource(R.string.scheme_education_scholarships_purpose),
             benefits = stringResource(R.string.scheme_education_scholarships_benefits),
             eligibility = stringResource(R.string.scheme_education_scholarships_eligibility),
-            application = stringResource(R.string.scheme_education_scholarships_application)
+            application = stringResource(R.string.scheme_education_scholarships_application),
+            officialUrl = "https://scholarships.gov.in/"
         )
     )
 
-    // --------------------------------------------------
     // CATEGORY FILTERS
-    // --------------------------------------------------
 
     data class CategoryOption(
         val key: String,
@@ -182,29 +188,15 @@ fun SchemesScreen() {
         mutableStateOf("All")
     }
 
-    // --------------------------------------------------
     // FILTER SCHEMES
-    // --------------------------------------------------
 
     val filteredSchemes = schemes.filter { scheme ->
 
         val matchesSearch =
-            scheme.name.contains(
-                searchText,
-                ignoreCase = true
-            ) ||
-                    scheme.purpose.contains(
-                        searchText,
-                        ignoreCase = true
-                    ) ||
-                    scheme.benefits.contains(
-                        searchText,
-                        ignoreCase = true
-                    ) ||
-                    scheme.eligibility.contains(
-                        searchText,
-                        ignoreCase = true
-                    )
+            scheme.name.contains(searchText, ignoreCase = true) ||
+                    scheme.purpose.contains(searchText, ignoreCase = true) ||
+                    scheme.benefits.contains(searchText, ignoreCase = true) ||
+                    scheme.eligibility.contains(searchText, ignoreCase = true)
 
         val matchesCategory =
             selectedCategory == "All" ||
@@ -213,9 +205,7 @@ fun SchemesScreen() {
         matchesSearch && matchesCategory
     }
 
-    // --------------------------------------------------
     // SCREEN
-    // --------------------------------------------------
 
     Column(
         modifier = Modifier
@@ -346,6 +336,17 @@ fun SchemesScreen() {
                             text = scheme.application,
                             fontSize = 14.sp
                         )
+
+                        // OFFICIAL WEBSITE BUTTON
+
+                        TextButton(
+                            onClick = {
+                                uriHandler.openUri(scheme.officialUrl)
+                            },
+                            modifier = Modifier.padding(top = 8.dp)
+                        ) {
+                            Text(visitOfficialWebsite)
+                        }
                     }
                 }
             }

@@ -187,7 +187,9 @@
     <string name="status_timeline">स्थितीचा मागोवा</string>
     <string name="no_status_history">स्थितीचा मागोवा उपलब्ध नाही.</string>
     <string name="grievance_in_progress">कार्यवाही सुरू</string>
-
+    <string name="visit_official_website">अधिकृत वेबसाइटला भेट द्या</string>
+    <string name="phone_number">मोबाईल क्रमांक (ऐच्छिक)</string>
+    <string name="invalid_phone_number">वैध १० अंकी मोबाईल क्रमांक टाका.</string>
 
 
 

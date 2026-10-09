@@ -177,6 +177,9 @@
     <string name="status">Status</string>
     <string name="describe_grievance">Describe your grievance</string>
     <string name="no_grievances">No grievances</string>
+    <string name="visit_official_website">Visit Official Website</string>
+    <string name="phone_number">Phone number </string>
+    <string name="invalid_phone_number">Enter a valid 10-digit phone number.</string>
 
 
 
