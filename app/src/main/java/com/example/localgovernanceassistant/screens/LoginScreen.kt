@@ -113,7 +113,7 @@ fun LoginScreen(
 
                     } catch (e: Exception) {
                         isLoading = false
-                        errorMessage = e.message ?: "Login failed"
+                        errorMessage = "Invalid email or password. Please try again."
                     }
                 }
             },
