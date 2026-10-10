@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Citizen Details - AI Local Governance</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <div class="details-page">
+
+        <div class="details-header">
+
+            <div>
+
+                <p class="admin-label">
+                    Administrator
+                </p>
+
+                <h1>
+                    Citizen Details
+                </h1>
+
+                <p class="dashboard-description">
+                    View citizen account information and grievance activity.
+                </p>
+
+            </div>
+
+
+            <a
+                href="citizens.html"
+                class="back-button"
+            >
+                ← Back to Citizens
+            </a>
+
+        </div>
+
+
+        <div class="details-card">
+
+            <!-- Citizen Header -->
+            <div class="details-top">
+
+                <div>
+
+                    <p class="detail-label">
+                        Citizen ID
+                    </p>
+
+                    <h2 id="citizenId">
+                        CIT001
+                    </h2>
+
+                </div>
+
+
+                <span
+                    id="citizenStatus"
+                    class="status-badge active-badge"
+                >
+                    Active
+                </span>
+
+            </div>
+
+
+            <!-- Citizen Information -->
+            <div class="detail-grid">
+
+                <div>
+
+                    <p class="detail-label">
+                        Full Name
+                    </p>
+
+                    <p
+                        id="citizenName"
+                        class="detail-value"
+                    >
+                        Pranaya Patil
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="detail-label">
+                        Email
+                    </p>
+
+                    <p
+                        id="citizenEmail"
+                        class="detail-value"
+                    >
+                        pranaya@example.com
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="detail-label">
+                        Registration Date
+                    </p>
+
+                    <p
+                        id="citizenDate"
+                        class="detail-value"
+                    >
+                        15 Sep 2026
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="detail-label">
+                        Total Grievances
+                    </p>
+
+                    <p
+                        id="citizenGrievances"
+                        class="detail-value"
+                    >
+                        3
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Recent Grievances -->
+            <div class="detail-section">
+
+                <p class="detail-label">
+                    Recent Grievances
+                </p>
+
+
+                <div id="citizenGrievanceList">
+
+                    <div class="citizen-grievance-item">
+
+                        <div>
+
+                            <strong>
+                                GRV001
+                            </strong>
+
+                            <p>
+                                Street Light Not Working
+                            </p>
+
+                        </div>
+
+
+                        <span class="status-badge pending-badge">
+                            Pending
+                        </span>
+
+                    </div>
+
+
+                    <div class="citizen-grievance-item">
+
+                        <div>
+
+                            <strong>
+                                GRV007
+                            </strong>
+
+                            <p>
+                                Water Supply Issue
+                            </p>
+
+                        </div>
+
+
+                        <span class="status-badge resolved-badge">
+                            Resolved
+                        </span>
+
+                    </div>
+
+
+                    <div class="citizen-grievance-item">
+
+                        <div>
+
+                            <strong>
+                                GRV011
+                            </strong>
+
+                            <p>
+                                Road Maintenance Request
+                            </p>
+
+                        </div>
+
+
+                        <span class="status-badge progress-badge">
+                            In Progress
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <footer class="dashboard-footer">
+            AI Local Governance Assistant • Administrator Portal
+        </footer>
+
+    </div>
+
+
+    <script src="citizen.js"></script>
+
+</body>
+</html>
