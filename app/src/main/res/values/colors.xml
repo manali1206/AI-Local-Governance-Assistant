@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+
+    <!-- Main brand colours -->
+    <color name="government_blue">#FF0D47A1</color>
+    <color name="government_blue_secondary">#FF1565C0</color>
+    <color name="government_blue_dark">#FF082D62</color>
+    <color name="government_light_blue">#FFE3F2FD</color>
+
+    <!-- Background and surface colours -->
+    <color name="government_background">#FFF5F8FC</color>
+    <color name="government_surface">#FFFFFFFF</color>
+
+    <!-- Text colours -->
+    <color name="government_text">#FF172B4D</color>
+    <color name="government_secondary_text">#FF5F6B7A</color>
+
+    <!-- Status colours -->
+    <color name="government_success">#FF2E7D32</color>
+    <color name="government_warning">#FFED8B00</color>
+    <color name="government_error">#FFC62828</color>
+
+    <!-- Compatibility with existing resource references -->
+    <color name="purple_200">#FF90CAF9</color>
+    <color name="purple_500">#FF0D47A1</color>
+    <color name="purple_700">#FF082D62</color>
+    <color name="teal_200">#FFE3F2FD</color>
+    <color name="teal_700">#FF1565C0</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
 </resources>
