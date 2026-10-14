@@ -13,11 +13,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -32,9 +37,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.localgovernanceassistant.supabaseClient
@@ -42,41 +48,24 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
-
-    var emailText by remember {
-        mutableStateOf("")
-    }
-
-    var passwordText by remember {
-        mutableStateOf("")
-    }
-
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
-
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
+    var emailText by remember { mutableStateOf("") }
+    var passwordText by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
-
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                MaterialTheme.colorScheme.background
-            )
-            .verticalScroll(
-                rememberScrollState()
-            )
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
             .padding(
                 horizontal = 24.dp,
                 vertical = 28.dp
@@ -84,23 +73,16 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
-        // ========================================
         // APP BRANDING
-        // ========================================
-
         Surface(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             color = MaterialTheme.colorScheme.primary,
             shape = RoundedCornerShape(18.dp)
         ) {
-
             Column(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Surface(
                     modifier = Modifier
                         .height(76.dp)
@@ -108,11 +90,9 @@ fun LoginScreen(
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.onPrimary
                 ) {
-
                     Box(
                         contentAlignment = Alignment.Center
                     ) {
-
                         Text(
                             text = "ALG",
                             fontSize = 21.sp,
@@ -122,9 +102,7 @@ fun LoginScreen(
                     }
                 }
 
-                Spacer(
-                    modifier = Modifier.height(16.dp)
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = "AI LOCAL GOVERNANCE",
@@ -140,9 +118,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
 
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = "Citizen Services & Information",
@@ -152,16 +128,9 @@ fun LoginScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(26.dp))
 
-        Spacer(
-            modifier = Modifier.height(26.dp)
-        )
-
-
-        // ========================================
         // LOGIN FORM
-        // ========================================
-
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(18.dp),
@@ -172,11 +141,9 @@ fun LoginScreen(
                 defaultElevation = 2.dp
             )
         ) {
-
             Column(
                 modifier = Modifier.padding(22.dp)
             ) {
-
                 Text(
                     text = "Welcome Back",
                     fontSize = 25.sp,
@@ -184,9 +151,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                Spacer(
-                    modifier = Modifier.height(6.dp)
-                )
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = "Sign in to access your citizen services.",
@@ -194,13 +159,9 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                Spacer(
-                    modifier = Modifier.height(24.dp)
-                )
+                Spacer(modifier = Modifier.height(24.dp))
 
-
-                // Email
-
+                // EMAIL
                 Text(
                     text = "Email Address",
                     fontSize = 14.sp,
@@ -208,9 +169,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Spacer(
-                    modifier = Modifier.height(7.dp)
-                )
+                Spacer(modifier = Modifier.height(7.dp))
 
                 OutlinedTextField(
                     value = emailText,
@@ -226,17 +185,13 @@ fun LoginScreen(
                         keyboardType = KeyboardType.Email
                     ),
                     singleLine = true,
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(10.dp),
+                    enabled = !isLoading
                 )
 
+                Spacer(modifier = Modifier.height(18.dp))
 
-                Spacer(
-                    modifier = Modifier.height(18.dp)
-                )
-
-
-                // Password
-
+                // PASSWORD
                 Text(
                     text = "Password",
                     fontSize = 14.sp,
@@ -244,9 +199,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Spacer(
-                    modifier = Modifier.height(7.dp)
-                )
+                Spacer(modifier = Modifier.height(7.dp))
 
                 OutlinedTextField(
                     value = passwordText,
@@ -258,22 +211,47 @@ fun LoginScreen(
                     placeholder = {
                         Text("Enter your password")
                     },
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {
+                                passwordVisible = !passwordVisible
+                            },
+                            enabled = !isLoading
+                        ) {
+                            Icon(
+                                imageVector = if (passwordVisible) {
+                                    Icons.Filled.VisibilityOff
+                                } else {
+                                    Icons.Filled.Visibility
+                                },
+                                contentDescription = if (passwordVisible) {
+                                    "Hide password"
+                                } else {
+                                    "Show password"
+                                }
+                            )
+                        }
+                    },
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
+                        keyboardType = if (passwordVisible) {
+                            KeyboardType.Text
+                        } else {
+                            KeyboardType.Password
+                        }
                     ),
                     singleLine = true,
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(10.dp),
+                    enabled = !isLoading
                 )
 
-
-                // Error message
-
+                // ERROR MESSAGE
                 if (errorMessage.isNotEmpty()) {
-
-                    Spacer(
-                        modifier = Modifier.height(12.dp)
-                    )
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
                         text = errorMessage,
@@ -282,52 +260,35 @@ fun LoginScreen(
                     )
                 }
 
+                Spacer(modifier = Modifier.height(24.dp))
 
-                Spacer(
-                    modifier = Modifier.height(24.dp)
-                )
-
-
-                // Login button
-
+                // LOGIN BUTTON
                 Button(
                     onClick = {
-
                         if (
                             emailText.isBlank() ||
                             passwordText.isBlank()
                         ) {
-
                             errorMessage =
                                 "Please enter your email and password."
-
                             return@Button
                         }
 
-
                         scope.launch {
-
                             isLoading = true
                             errorMessage = ""
 
                             try {
-
                                 supabaseClient.auth.signInWith(Email) {
-
                                     email = emailText.trim()
                                     password = passwordText
-
                                 }
 
                                 onLoginSuccess()
-
                             } catch (e: Exception) {
-
-                                errorMessage =
-                                    e.message ?: "Login failed. Please try again."
-
+                                errorMessage = e.message
+                                    ?: "Login failed. Please try again."
                             } finally {
-
                                 isLoading = false
                             }
                         }
@@ -342,17 +303,13 @@ fun LoginScreen(
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
-
                     if (isLoading) {
-
                         CircularProgressIndicator(
                             modifier = Modifier.height(22.dp),
                             color = MaterialTheme.colorScheme.onPrimary,
                             strokeWidth = 2.dp
                         )
-
                     } else {
-
                         Text(
                             text = "Sign In",
                             fontSize = 16.sp,
@@ -361,28 +318,18 @@ fun LoginScreen(
                     }
                 }
 
+                Spacer(modifier = Modifier.height(12.dp))
 
-                Spacer(
-                    modifier = Modifier.height(12.dp)
-                )
-
-
-                // Registration navigation
-
+                // REGISTRATION NAVIGATION
                 RowWithRegistration(
                     onRegisterClick = onRegisterClick
                 )
             }
         }
 
+        Spacer(modifier = Modifier.height(22.dp))
 
-        Spacer(
-            modifier = Modifier.height(22.dp)
-        )
-
-
-        // Footer
-
+        // FOOTER
         Text(
             text = "AI Local Governance Assistant",
             fontSize = 12.sp,
@@ -391,17 +338,14 @@ fun LoginScreen(
     }
 }
 
-
 @Composable
 private fun RowWithRegistration(
     onRegisterClick: () -> Unit
 ) {
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(
             text = "New to the application?",
             fontSize = 13.sp,
@@ -411,7 +355,6 @@ private fun RowWithRegistration(
         TextButton(
             onClick = onRegisterClick
         ) {
-
             Text(
                 text = "Create an Account",
                 fontWeight = FontWeight.Bold,
